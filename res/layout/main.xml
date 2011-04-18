@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<Button android:layout_width="match_parent" android:text="Seznam" android:id="@+id/btnSeznam" android:layout_height="120dip"></Button>
+<Button android:layout_width="match_parent" android:text="Začni znova" android:id="@+id/btnZnova" android:layout_height="120dip"></Button>
+<Button android:layout_width="match_parent" android:text="Izberi pot" android:id="@+id/btnIzberiPot" android:layout_height="120dip"></Button>
+<Button android:layout_width="match_parent" android:text="Izhod" android:id="@+id/btnIzhod" android:layout_height="120dip"></Button>
+</LinearLayout>

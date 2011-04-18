@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, rekreasist!</string>
+    <string name="app_name">Rekreacijski asistent</string>
+    <string name="cas">Čas:</string>
+    <string name="pot">Pot:</string>
+    <string name="startstop">Start/Stop</string>
+    <string name="pavza">Počitek</string>
+    <string name="zazeniPot">Zaženi pot</string>
+    <string name="nazaj">Nazaj</string>
+</resources>
