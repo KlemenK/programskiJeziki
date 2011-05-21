@@ -3,10 +3,15 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/glavni">
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/cas" android:id="@+id/cas"></TextView>
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/pot" android:id="@+id/pot"></TextView>
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_gravity="bottom" android:layout_height="wrap_content" android:layout_width="match_parent">
-        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:text="@string/startstop" android:layout_gravity="center" android:id="@+id/btnStartStop"></Button>
-        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:text="@string/pavza" android:layout_gravity="center" android:id="@+id/btnPavza"></Button>
+    <LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="400px" android:orientation="vertical" android:layout_weight="1">
+        <com.google.android.maps.MapView android:id="@+id/myMapView" android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:layout_height="match_parent" android:apiKey="0hbSGfgHC1ZtGCubRaOecG17uX8VbgGIilUU_1w"></com.google.android.maps.MapView>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView android:id="@+id/cas" android:textSize="30px" android:layout_width="wrap_content" android:text="@string/cas" android:layout_height="wrap_content"></TextView>
+        <TextView android:id="@+id/pot" android:textSize="30px" android:layout_width="wrap_content" android:text="@string/pot" android:layout_height="wrap_content"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_gravity="bottom" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_weight="0">
+        <Button android:layout_weight="1" android:id="@+id/btnStartStop" android:layout_width="wrap_content" android:layout_gravity="center" android:text="@string/startstop" android:layout_height="wrap_content"></Button>
+        <Button android:layout_weight="1" android:id="@+id/btnPavza" android:layout_width="wrap_content" android:layout_gravity="center" android:text="@string/pavza" android:layout_height="wrap_content"></Button>
     </LinearLayout>
 </LinearLayout>
