@@ -2,10 +2,13 @@
 <resources>
     <string name="hello">Hello World, rekreasist!</string>
     <string name="app_name">Rekreacijski asistent</string>
-    <string name="cas">Čas:</string>
+    <string name="cas">Čas: </string>
     <string name="pot">Pot:</string>
     <string name="startstop">Start/Stop</string>
     <string name="pavza">Počitek</string>
     <string name="zazeniPot">Zaženi pot</string>
     <string name="nazaj">Nazaj</string>
+    <string name="novkrog">Krog:</string>
+    <string name="novKrog">Nov krog</string>
+    <string name="NajCasKroga">Najhitrejši:</string>
 </resources>

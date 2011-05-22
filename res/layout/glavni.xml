@@ -3,15 +3,33 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/glavni">
-    <LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="400px" android:orientation="vertical" android:layout_weight="1">
+    <LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:orientation="vertical" android:layout_weight="1" android:layout_height="575px">
         <com.google.android.maps.MapView android:id="@+id/myMapView" android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:layout_height="match_parent" android:apiKey="0hbSGfgHC1ZtGCubRaOecG17uX8VbgGIilUU_1w"></com.google.android.maps.MapView>
     </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:orientation="vertical">
-        <TextView android:id="@+id/cas" android:textSize="30px" android:layout_width="wrap_content" android:text="@string/cas" android:layout_height="wrap_content"></TextView>
-        <TextView android:id="@+id/pot" android:textSize="30px" android:layout_width="wrap_content" android:text="@string/pot" android:layout_height="wrap_content"></TextView>
+    <LinearLayout android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/linearLayout3" android:orientation="vertical" android:gravity="bottom" android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center|left" android:id="@+id/linearLayout4">
+            <LinearLayout android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="match_parent" android:id="@+id/linearLayout5">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/pot" android:text="@string/pot" android:textSize="30px"></TextView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:id="@+id/linearLayout6">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/novkrog" android:gravity="center" android:textSize="30px" android:id="@+id/krog"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout8">
+        <LinearLayout android:layout_height="match_parent" android:id="@+id/linearLayout10" android:layout_width="match_parent">
+            <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_weight="1" android:layout_width="wrap_content">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/cas" android:text="@string/cas" android:textSize="20px"></TextView>
+                <Chronometer android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/stoparca" android:text="Chronometer" android:textSize="20px"></Chronometer>
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout9" android:layout_weight="1">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvNajboljsiKrog" android:text="@string/NajCasKroga" android:textSize="20px"></TextView>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_gravity="bottom" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_weight="0">
-        <Button android:layout_weight="1" android:id="@+id/btnStartStop" android:layout_width="wrap_content" android:layout_gravity="center" android:text="@string/startstop" android:layout_height="wrap_content"></Button>
-        <Button android:layout_weight="1" android:id="@+id/btnPavza" android:layout_width="wrap_content" android:layout_gravity="center" android:text="@string/pavza" android:layout_height="wrap_content"></Button>
+        <Button android:id="@+id/btnStartStop" android:layout_width="wrap_content" android:layout_gravity="center" android:text="@string/startstop" android:layout_height="wrap_content" android:layout_weight="1"></Button>
+        <Button android:id="@+id/btnPavza" android:layout_width="wrap_content" android:layout_gravity="center" android:text="@string/pavza" android:layout_height="wrap_content" android:layout_weight="1"></Button>
+        <Button android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="@string/novKrog" android:id="@+id/btnNovKrog"></Button>
     </LinearLayout>
 </LinearLayout>
