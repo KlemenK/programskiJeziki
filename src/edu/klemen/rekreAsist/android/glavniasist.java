@@ -73,12 +73,12 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		stoparca.setFormat(null);
 		stoparca.setBase(SystemClock.elapsedRealtime());
 		//-----------------------------------------maps--
-		MapView myMapView = (MapView)findViewById(R.id.myMapView);
-		mapController = myMapView.getController();
+		MapView myMapView1 = (MapView)findViewById(R.id.myMapView);
+		mapController = myMapView1.getController();
 
-		myMapView.setSatellite(true);
-		myMapView.setStreetView(true);
-		myMapView.displayZoomControls(false);
+		myMapView1.setSatellite(true);
+		myMapView1.setStreetView(true);
+		myMapView1.displayZoomControls(false);
 
 		mapController.setZoom(17);
 
@@ -88,7 +88,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		locationManager = (LocationManager)getSystemService(context);
 		// Add the MyPositionOverlay
 		positionOverlay = new MyPositionOverlay();
-		List<Overlay> overlays = myMapView.getOverlays();
+		List<Overlay> overlays = myMapView1.getOverlays();
 		overlays.add(positionOverlay);
 
 		Criteria criteria = new Criteria();
@@ -164,7 +164,14 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		long start = System.currentTimeMillis();
+		long end = System.currentTimeMillis();
+		
+		long time = end-start;
+		
+		//stoparca.se
 		if(stoparcaFlag==false){
+			//stoparca.setBase(time);
 			stoparca.setBase(SystemClock.elapsedRealtime());
 			stoparcaFlag=true;
 			
