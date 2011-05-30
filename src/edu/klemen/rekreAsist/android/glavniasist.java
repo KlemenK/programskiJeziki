@@ -1,20 +1,24 @@
 package edu.klemen.rekreAsist.android;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 
+import android.R.string;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TwoLineListItem;
 
 
 
@@ -34,13 +38,14 @@ import android.location.LocationManager;
 
 public class glavniasist extends MapActivity implements android.view.View.OnClickListener {
 	Button startstop,pavza,novKrog;
-	TextView cas,pot,krog;
+	TextView cas,pot,krog,hitrost;
 	Chronometer stoparca;
 	
 	
 	MapController mapController;
 	MyPositionOverlay positionOverlay;
 	ArrayList<Location> locations;
+	List<Float> speed;
 	public int trenKrog=0;
 	public boolean pause=false;
 	boolean stoparcaFlag=false;
@@ -53,12 +58,14 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		
 		locations=new ArrayList<Location>();
+		speed=new ArrayList<Float>();
 		
 		startstop=(Button) findViewById(R.id.btnStartStop);
 		pavza=(Button) findViewById(R.id.btnPavza);
 		cas=(TextView) findViewById(R.id.cas);
 		pot=(TextView) findViewById(R.id.pot);
 		krog=(TextView) findViewById(R.id.krog);
+		hitrost=(TextView) findViewById(R.id.tw_Hitrost);
 		novKrog=(Button) findViewById(R.id.btnNovKrog);
 		
 		startstop.setOnClickListener(this);
@@ -102,13 +109,12 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		Location location = locationManager.getLastKnownLocation(provider);
 		my_updateWithNewLocation(location);
 		
-		locationManager.requestLocationUpdates(provider, 200, 5,   
+		locationManager.requestLocationUpdates(provider, 10, 1,   
 				locationListener);
 		
 		//-----------------------------------------maps/-
 		
 		
-
 	}
 	
 	private final LocationListener locationListener = new LocationListener() {
@@ -145,6 +151,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		//	double lng = location.getLongitude();
 			//latLongString = "Lat:" + lat + "\nLong:" + lng;
 			locations.add(location);
+			speed.add((float)(location.getSpeed()*3.6));
+			hitrost.setText("Hitrost: "+(location.getSpeed()*3.6)+"km/h");
 			if((locations.size()>=2)){
 	    		
 	    		for(int i=0;i<locations.size()-1;i++){
@@ -166,9 +174,12 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		// TODO Auto-generated method stub
 		long start = System.currentTimeMillis();
 		long end = System.currentTimeMillis();
-		
+		CharSequence xy=null;
 		long time = end-start;
-		
+		//stoparca.setText("25");
+		//stoparca.setFreezesText(true);
+		stoparca.setSaveEnabled(true);
+		//stoparca.set
 		//stoparca.se
 		if(stoparcaFlag==false){
 			//stoparca.setBase(time);
@@ -178,23 +189,23 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		}
 		switch (v.getId()) {
 		case R.id.btnStartStop:
-			if(pause==false){
+			if(pause==false){				
 				stoparca.start();
+				xy=stoparca.getText();
+				//stoparca.get
 				pause=true;
 			}
 			else{
 				stoparca.stop();
-				
 				pause=false;
-				
 			}
 			break;
 
 		case R.id.btnPavza:
 			stoparca.stop();
+			
 
 			pause=false;
-			//stoparca.setBase(SystemClock.elapsedRealtime());
 			break;
 		case R.id.btnNovKrog:
 			trenKrog++;
@@ -205,6 +216,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		default:
 			break;
 		}
+		
 	}
 
 	@Override

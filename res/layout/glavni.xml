@@ -18,12 +18,15 @@
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout8">
         <LinearLayout android:layout_height="match_parent" android:id="@+id/linearLayout10" android:layout_width="match_parent">
-            <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_weight="1" android:layout_width="wrap_content">
+            <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_width="wrap_content" android:layout_weight="1">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/cas" android:text="@string/cas" android:textSize="20px"></TextView>
                 <Chronometer android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/stoparca" android:text="Chronometer" android:textSize="20px"></Chronometer>
             </LinearLayout>
+            <LinearLayout android:id="@+id/linearLayout11" android:layout_height="match_parent" android:layout_width="wrap_content" android:layout_weight="1">
+                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/idHitrost" android:id="@+id/tw_Hitrost" android:textSize="20px"></TextView>
+            </LinearLayout>
             <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout9" android:layout_weight="1">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvNajboljsiKrog" android:text="@string/NajCasKroga" android:textSize="20px"></TextView>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvNajboljsiKrog" android:text="@string/NajCasKroga" android:textSize="20px" android:gravity="center" android:layout_gravity="center"></TextView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
