@@ -39,9 +39,10 @@ import android.location.LocationManager;
 
 public class glavniasist extends MapActivity implements android.view.View.OnClickListener {
 	Button startstop,pavza,novKrog;
-	TextView cas,pot,krog,hitrost;
+	TextView cas,pot,krog,hitrost,maxHitrost;
 	Chronometer stoparca;
 	
+	ArrayList<Vadba> poljeRekreacij=new ArrayList<Vadba>();
 	
 	MapController mapController;
 	MyPositionOverlay positionOverlay;
@@ -51,9 +52,11 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	public boolean pause=false;
 	public boolean flag=true;
 	public long start = 0;//SystemClock.elapsedRealtime();
-	public long end = 0;//SystemClock.currentTimeMillis();
-	public long time=0;
+	public long end = 0;
 	boolean stoparcaFlag=false;
+	boolean tflag=true;
+	public float MaxSpeed=0;
+	LocationManager locationManager;
 	
 	
 	@Override
@@ -74,6 +77,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		krog=(TextView) findViewById(R.id.krog);
 		hitrost=(TextView) findViewById(R.id.tw_Hitrost);
 		novKrog=(Button) findViewById(R.id.btnNovKrog);
+		maxHitrost=(TextView) findViewById(R.id.maxHitrost);
 		
 		startstop.setOnClickListener(this);
 		pavza.setOnClickListener(this);
@@ -96,7 +100,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		mapController.setZoom(17);
 
 
-		LocationManager locationManager;
+		
 		String context = Context.LOCATION_SERVICE;
 		locationManager = (LocationManager)getSystemService(context);
 		// Add the MyPositionOverlay
@@ -115,8 +119,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		Location location = locationManager.getLastKnownLocation(provider);
 		my_updateWithNewLocation(location);
 		
-		locationManager.requestLocationUpdates(provider, 35, 5,   
-				locationListener);
+		locationManager.requestLocationUpdates(provider, 35, 5, locationListener);
 		
 		//-----------------------------------------maps/-
 		
@@ -157,8 +160,15 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		//	double lng = location.getLongitude();
 			//latLongString = "Lat:" + lat + "\nLong:" + lng;
 			locations.add(location);
-			speed.add((float)(location.getSpeed()*3.6));
-			hitrost.setText("Hitrost: "+(location.getSpeed()*3.6)+"km/h");
+			double sp=location.getSpeed()*3.6;
+			DecimalFormat te=new DecimalFormat("#.##");
+			sp=Double.valueOf(te.format(sp));
+			hitrost.setText("Hitrost: "+sp+"km/h");
+			speed.add((float)sp);
+			if(maxHitrost((float)sp)==true){
+				MaxSpeed=(float)sp;
+				maxHitrost.setText("Max hitrost: "+MaxSpeed+"km/h");
+			}
 			if((locations.size()>=2)){
 	    		
 	    		for(int i=0;i<locations.size()-1;i++){
@@ -175,13 +185,19 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			//myLocationText.setText("Trenutni položaj je:" + latLongString);
 		}
 	}
+	public boolean maxHitrost(float s){
+		for(int i=0;i<speed.size();i++){
+			if(s<speed.get(i)) return false;
+		}
+		return true;
+	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
 		switch (v.getId()) {
 		case R.id.btnStartStop:
-		//	Toast test;
+			Toast test;
 			if(pause==false){
 				if(flag==false){
 					//start=SystemClock.elapsedRealtime();
@@ -189,23 +205,47 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					stoparca.start();
 					stoparcaFlag=true;
 					pause=true;
+					tflag=false;
 				}else{
+					start=SystemClock.elapsedRealtime();
 					stoparca.setBase(SystemClock.elapsedRealtime());//prviè
 					stoparca.start();
 					stoparcaFlag=true;
 					pause=true;
 					flag=false;
+					tflag=false;
 				}
 			}
 			else{
-				stoparca.stop();
-				end=SystemClock.elapsedRealtime() - stoparca.getBase();
-				pause=false;
+				if(tflag==false){
+					poljeRekreacij.add(new Vadba(locations, speed, trenKrog, MaxSpeed));
+					locations.clear();
+					speed.clear();
+					trenKrog=0;
+					MaxSpeed=0;
+					stoparca.stop();
+					stoparca.setBase(SystemClock.elapsedRealtime());
+					flag=true;
+					pause=false;
+					
+					hitrost.setText("Hitrost: "+0.0+"km/h");
+					cas.setText("Èas: ");
+					maxHitrost.setText("Max Hitrost: "+MaxSpeed+"km/h");
+					krog.setText("Krog: "+trenKrog);
+					pot.setText("Pot: "+0+"m");
+					
+test=Toast.makeText(this, "velikost polja"+poljeRekreacij.size(), Toast.LENGTH_SHORT);
+test.show();
+				}
 			}
 			break;
 
 		case R.id.btnPavza:
 			stoparca.stop();
+			if(tflag==false){
+				end=SystemClock.elapsedRealtime() - stoparca.getBase();
+				tflag=true;
+			}
 			pause=false;
 			break;
 		case R.id.btnNovKrog:
