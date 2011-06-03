@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -48,6 +49,10 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	List<Float> speed;
 	public int trenKrog=0;
 	public boolean pause=false;
+	public boolean flag=true;
+	public long start = 0;//SystemClock.elapsedRealtime();
+	public long end = 0;//SystemClock.currentTimeMillis();
+	public long time=0;
 	boolean stoparcaFlag=false;
 	
 	
@@ -59,6 +64,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		locations=new ArrayList<Location>();
 		speed=new ArrayList<Float>();
+		
+		
 		
 		startstop=(Button) findViewById(R.id.btnStartStop);
 		pavza=(Button) findViewById(R.id.btnPavza);
@@ -78,7 +85,6 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		
 		stoparca.setFormat(null);
-		stoparca.setBase(SystemClock.elapsedRealtime());
 		//-----------------------------------------maps--
 		MapView myMapView1 = (MapView)findViewById(R.id.myMapView);
 		mapController = myMapView1.getController();
@@ -109,7 +115,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		Location location = locationManager.getLastKnownLocation(provider);
 		my_updateWithNewLocation(location);
 		
-		locationManager.requestLocationUpdates(provider, 10, 1,   
+		locationManager.requestLocationUpdates(provider, 35, 5,   
 				locationListener);
 		
 		//-----------------------------------------maps/-
@@ -172,39 +178,34 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		long start = System.currentTimeMillis();
-		long end = System.currentTimeMillis();
-		CharSequence xy=null;
-		long time = end-start;
-		//stoparca.setText("25");
-		//stoparca.setFreezesText(true);
-		stoparca.setSaveEnabled(true);
-		//stoparca.set
-		//stoparca.se
-		if(stoparcaFlag==false){
-			//stoparca.setBase(time);
-			stoparca.setBase(SystemClock.elapsedRealtime());
-			stoparcaFlag=true;
-			
-		}
+		
 		switch (v.getId()) {
 		case R.id.btnStartStop:
-			if(pause==false){				
-				stoparca.start();
-				xy=stoparca.getText();
-				//stoparca.get
-				pause=true;
+		//	Toast test;
+			if(pause==false){
+				if(flag==false){
+					//start=SystemClock.elapsedRealtime();
+					stoparca.setBase(SystemClock.elapsedRealtime()-end);
+					stoparca.start();
+					stoparcaFlag=true;
+					pause=true;
+				}else{
+					stoparca.setBase(SystemClock.elapsedRealtime());//prviè
+					stoparca.start();
+					stoparcaFlag=true;
+					pause=true;
+					flag=false;
+				}
 			}
 			else{
 				stoparca.stop();
+				end=SystemClock.elapsedRealtime() - stoparca.getBase();
 				pause=false;
 			}
 			break;
 
 		case R.id.btnPavza:
 			stoparca.stop();
-			
-
 			pause=false;
 			break;
 		case R.id.btnNovKrog:
