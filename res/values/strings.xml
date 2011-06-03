@@ -10,6 +10,6 @@
     <string name="nazaj">Nazaj</string>
     <string name="novkrog">Krog:</string>
     <string name="novKrog">Nov krog</string>
-    <string name="NajCasKroga">Najhitrejši:</string>
+    <string name="MaxHitrost">Max hitrost:</string>
     <string name="idHitrost">Hitrost:</string>
 </resources>
