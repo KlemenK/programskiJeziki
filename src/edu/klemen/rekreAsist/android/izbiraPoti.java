@@ -39,7 +39,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.izbirapoti);
 		
-		
+		this.setRequestedOrientation(1);
 		
 		nazaj=(Button) findViewById(R.id.btnNazaj);
 		zazeni=(Button) findViewById(R.id.btn_zazeniPot);
@@ -48,6 +48,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		zazeni.setOnClickListener(this);
 		
 		locations1=new ArrayList<Location>();
+		try{
 		//-----------------------------------------maps--
 		MapView myMapView = (MapView)findViewById(R.id.mapviewNova);
 		mapController1 = myMapView.getController();
@@ -78,9 +79,11 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		Location location1 = locationManager.getLastKnownLocation(provider1);
 		my_updateWithNewLocation(location1);
 		
-		locationManager.requestLocationUpdates(provider1, 200, 5,   
+		locationManager.requestLocationUpdates(provider1, 35, 10,   
 				locationListener);
-		
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		//-----------------------------------------maps/-
 		
 		

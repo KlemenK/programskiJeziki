@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:baselineAligned="false">
+  
+  <ListView android:id="@android:id/list"
+        android:layout_width="0dip" android:layout_height="0dip"/>
+  <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
+      <LinearLayout android:id="@+id/linearLayout2" android:layout_height="match_parent" android:layout_weight="1" android:layout_width="match_parent" android:orientation="horizontal">
+          <TextView android:width="250dip" android:id="@+id/tv_ListStKrogov" android:text="TextView" android:layout_gravity="top" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_weight="3" android:drawableBottom="@drawable/crtavodoravno" android:drawableRight="@drawable/crtanavpicno"></TextView>
+          <LinearLayout android:id="@+id/linearLayout5" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1" android:orientation="vertical">
+              <LinearLayout android:id="@+id/linearLayout6" android:layout_height="wrap_content" android:layout_width="match_parent">
+                  <TextView android:layout_weight="3" android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="14dip" android:gravity="center" android:id="@+id/tv_ListDatum" android:text="TextView" android:layout_gravity="top" android:drawableBottom="@drawable/crtavodoravno"></TextView>
+              </LinearLayout>
+              <LinearLayout android:id="@+id/linearLayout7" android:layout_height="wrap_content" android:layout_width="match_parent">
+                  <LinearLayout android:orientation="vertical" android:id="@+id/linearLayout3" android:layout_weight="1" android:layout_height="wrap_content" android:gravity="left" android:layout_width="190dip">
+                      <TextView android:layout_weight="1" android:layout_height="wrap_content" android:width="130dip" android:id="@+id/tv_ListCas" android:text="TextView" android:layout_gravity="center" android:layout_width="wrap_content" android:fadingEdge="horizontal|vertical" android:drawableBottom="@drawable/crtavodoravno" android:drawableRight="@drawable/crtanavpicno1"></TextView>
+                      <TextView android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tv_ListPot" android:text="TextView" android:layout_gravity="center" android:gravity="center|left" android:fadingEdge="horizontal|vertical" android:scrollbarAlwaysDrawVerticalTrack="true" android:scrollbarAlwaysDrawHorizontalTrack="false" android:drawableBottom="@drawable/crtavodoravno" android:drawableRight="@drawable/crtanavpicno1"></TextView>
+                  </LinearLayout>
+                  <LinearLayout android:orientation="vertical" android:id="@+id/linearLayout4" android:layout_weight="1" android:layout_height="match_parent" android:layout_width="match_parent">
+                      <TextView android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="14dip" android:gravity="center|left" android:id="@+id/tv_ListHitrost" android:text="TextView" android:layout_gravity="center" android:fadingEdge="horizontal|vertical" android:drawableBottom="@drawable/crtavodoravno"></TextView>
+                      <TextView android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center|left" android:id="@+id/tv_ListPovprecnaHitrost" android:text="TextView" android:layout_gravity="top" android:fadingEdge="horizontal|vertical" android:drawableBottom="@drawable/crtavodoravno"></TextView>
+                  </LinearLayout>
+              </LinearLayout>
+          </LinearLayout>
+      </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

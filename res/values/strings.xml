@@ -12,4 +12,5 @@
     <string name="novKrog">Nov krog</string>
     <string name="MaxHitrost">Max hitrost:</string>
     <string name="idHitrost">Hitrost:</string>
+    <string name="stringTemperatura">°C</string>
 </resources>

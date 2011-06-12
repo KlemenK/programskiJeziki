@@ -1,38 +1,38 @@
 package edu.klemen.rekreAsist.android;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
 
-import android.R.string;
-import android.app.Activity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.format.Time;
-import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TwoLineListItem;
-
-
-
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
+import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
+
 import android.content.Context;
-import android.location.Address;
+import android.graphics.Color;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,7 +40,10 @@ import android.location.LocationManager;
 public class glavniasist extends MapActivity implements android.view.View.OnClickListener {
 	Button startstop,pavza,novKrog;
 	TextView cas,pot,krog,hitrost,maxHitrost;
+	TextView tvTemperatura;
 	Chronometer stoparca;
+	
+	ApplicationExample podatki;//baza
 	
 	ArrayList<Vadba> poljeRekreacij=new ArrayList<Vadba>();
 	
@@ -48,21 +51,33 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	MyPositionOverlay positionOverlay;
 	ArrayList<Location> locations;
 	List<Float> speed;
+	public float dolzina;
 	public int trenKrog=0;
 	public boolean pause=false;
 	public boolean flag=true;
 	public long start = 0;//SystemClock.elapsedRealtime();
 	public long end = 0;
+	float povSp=0;
 	boolean stoparcaFlag=false;
 	boolean tflag=true;
 	public float MaxSpeed=0;
 	LocationManager locationManager;
+	public Calendar koledar;
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.glavni);
+		
+		
+		this.setRequestedOrientation(1);
+		podatki=(ApplicationExample)getApplication(); //baza
+		
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
+		tvTemperatura = (TextView) findViewById(R.id.tv_TitleTemperatura);
+		tvTemperatura.setTextColor(Color.WHITE);
 		
 		
 		locations=new ArrayList<Location>();
@@ -89,10 +104,18 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		
 		stoparca.setFormat(null);
+		
+		try{
+			setTemperatura(); // temperatura
+		}catch(Exception f){
+			tvTemperatura.setText("ni internetne povezave");
+		}
+		
+		try{
 		//-----------------------------------------maps--
 		MapView myMapView1 = (MapView)findViewById(R.id.myMapView);
 		mapController = myMapView1.getController();
-
+		
 		myMapView1.setSatellite(true);
 		myMapView1.setStreetView(true);
 		myMapView1.displayZoomControls(false);
@@ -119,10 +142,10 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		Location location = locationManager.getLastKnownLocation(provider);
 		my_updateWithNewLocation(location);
 		
-		locationManager.requestLocationUpdates(provider, 35, 5, locationListener);
+		locationManager.requestLocationUpdates(provider, 35, 10, locationListener);
 		
 		//-----------------------------------------maps/-
-		
+		}catch(Exception f){}
 		
 	}
 	
@@ -142,7 +165,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 
 	private void my_updateWithNewLocation(Location location) {
 		//String latLongString;
-		Double dolzina=0.0;
+		dolzina=0;
 		//TextView myLocationText;
 		//myLocationText = (TextView)findViewById(R.id.myLocationText);
 
@@ -175,8 +198,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	    			Location loc1=locations.get(i);
 	    			Location loc2=locations.get(i+1);
 	    			dolzina+=loc1.distanceTo(loc2);   
-	    			DecimalFormat test=new DecimalFormat("#.##");
-	    			dolzina=Double.valueOf(test.format(dolzina));
+	    		//	DecimalFormat test=new DecimalFormat("#.##");
+	    		//	dolzina=float.valueOf(test.format(dolzina));
 	    			//loc1.gett
 	    		}
 	    		pot.setText("Pot: "+dolzina+"m");
@@ -204,6 +227,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					stoparca.setBase(SystemClock.elapsedRealtime()-end);
 					stoparca.start();
 					stoparcaFlag=true;
+					
 					pause=true;
 					tflag=false;
 				}else{
@@ -216,9 +240,20 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					tflag=false;
 				}
 			}
-			else{
+			else{// zamejaj koledar
 				if(tflag==false){
-					poljeRekreacij.add(new Vadba(locations, speed, trenKrog, MaxSpeed));
+					Calendar kol;
+					kol=Calendar.getInstance();
+
+					
+					int dan=kol.get(Calendar.DATE);
+					int mesec= kol.get(Calendar.MONTH)+1;
+					int leto= kol.get(Calendar.YEAR);
+					test=Toast.makeText(this, dan+"  "+mesec+"  "+leto, Toast.LENGTH_SHORT);
+					test.show();
+					povSp=povprecnaHitrost(speed);
+					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, MaxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto));
+			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, MaxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
 					locations.clear();
 					speed.clear();
 					trenKrog=0;
@@ -234,8 +269,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					krog.setText("Krog: "+trenKrog);
 					pot.setText("Pot: "+0+"m");
 					
-test=Toast.makeText(this, "velikost polja"+poljeRekreacij.size(), Toast.LENGTH_SHORT);
-test.show();
+					test=Toast.makeText(this, "velikost polja"+poljeRekreacij.size(), Toast.LENGTH_SHORT);
+					test.show();
 				}
 			}
 			break;
@@ -259,11 +294,72 @@ test.show();
 		}
 		
 	}
-
+	private float povprecnaHitrost(List<Float> s){
+		float v=0;
+		for(int i=0;i<s.size();i++) v=v+s.get(i);
+		return (v/s.size());
+	}
 	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public String executeHttpGet() throws Exception 
+	{
+		String page;
+	    BufferedReader in = null;
+	    try {
+	        HttpClient client = new DefaultHttpClient();
+	        HttpGet request = new HttpGet();
+	        request.setURI(new URI("http://meteo.arso.gov.si/uploads/probase/www/observ/surface/text/sl/observationAms_MARIBOR_TABOR_latest.xml"));
+	        HttpResponse response = client.execute(request);
+	        in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+	        StringBuffer sb = new StringBuffer("");
+	        String line = "";
+	        String NL = System.getProperty("line.separator");
+	        
+	        
+	        while ((line = in.readLine()) != null) sb.append(line + NL);	        
+	        
+	        in.close();
+	        page = sb.toString();
+	        System.out.println(page);
+	        
+	        
+	        } 
+	    finally 
+		    {
+			        if (in != null) 
+			        {
+			            try {
+			                	in.close();
+			                } 
+			            	catch (IOException e) 
+			            	{
+			            		e.printStackTrace();
+			                }
+			        }
+		     }
+	    
+	    return page;
+	}
+	public void setTemperatura(){
+		String stran = new String();
+		int znacka=0;
+		String tempC;
+		
+		try
+		{
+			stran= executeHttpGet();
+		}
+			catch (Exception eee) {}
+		
+		
+		znacka = stran.indexOf("<t>");
+		tempC = stran.substring(znacka+3, stran.indexOf("</t>"));
+		
+		tvTemperatura.setText(tempC+"°C");
 	}
 
 }

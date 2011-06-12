@@ -10,12 +10,17 @@ import android.widget.Button;
 public class rekreasist extends Activity implements OnClickListener {
     private static final int GLAVNO_OKNO_ID = 0;
 	private static final int IZBIRA_POTI_ID = 0;
+	ApplicationExample podatki;
 	/** Called when the activity is first created. */
 	Button izhod,znova,pot,seznam;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        this.setRequestedOrientation(1);
+        
+        podatki=(ApplicationExample)getApplication();
         
         izhod=(Button) findViewById(R.id.btnIzhod);
         znova=(Button) findViewById(R.id.btnZnova);
@@ -29,6 +34,7 @@ public class rekreasist extends Activity implements OnClickListener {
     }
 	@Override
 	public void onClick(View v) {
+		
 		// TODO Auto-generated method stub
 		//if(v.getId()==R.id.btnIzhod) finish();
 		switch(v.getId()){
@@ -45,6 +51,12 @@ public class rekreasist extends Activity implements OnClickListener {
 			this.startActivityForResult(zagon, GLAVNO_OKNO_ID);
 			//startActivity(zagon);
 			break;
+		case R.id.btnSeznam:
+			Intent zagon1=new Intent(this, SeznamPodatkov.class);
+			startActivity(zagon1);
+
+			break;
+			
 			default:
 				break;
 		}
