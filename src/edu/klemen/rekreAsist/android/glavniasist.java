@@ -51,7 +51,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	MyPositionOverlay positionOverlay;
 	ArrayList<Location> locations;
 	List<Float> speed;
-	public float dolzina;
+	public float dolzina=0;
 	public int trenKrog=0;
 	public boolean pause=false;
 	public boolean flag=true;
