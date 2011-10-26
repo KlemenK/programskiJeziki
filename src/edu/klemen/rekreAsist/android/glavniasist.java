@@ -348,6 +348,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		String stran = new String();
 		int znacka=0;
 		String tempC;
+		String relVlaznost,povpTemp,link;
+		
+		
 		
 		try
 		{
@@ -358,7 +361,10 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		znacka = stran.indexOf("<t>");
 		tempC = stran.substring(znacka+3, stran.indexOf("</t>"));
-		
+		relVlaznost=stran.substring(stran.indexOf("<rh>")+4,stran.indexOf("</rh>"));
+		povpTemp=stran.substring(stran.indexOf("<tavg>")+6,stran.indexOf("<tavg>"));
+		link=stran.substring(stran.indexOf("<docs_url>")+10,stran.indexOf("<docs_url>"));
+			
 		tvTemperatura.setText(tempC+"°C");
 	}
 
