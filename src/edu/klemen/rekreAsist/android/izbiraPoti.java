@@ -53,8 +53,8 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		MapView myMapView = (MapView)findViewById(R.id.mapviewNova);
 		mapController1 = myMapView.getController();
 
-		myMapView.setSatellite(true);
-		myMapView.setStreetView(true);
+//		myMapView.setSatellite(true);
+//		myMapView.setStreetView(true);
 		myMapView.displayZoomControls(false);
 
 		mapController1.setZoom(17);
@@ -79,8 +79,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		Location location1 = locationManager.getLastKnownLocation(provider1);
 		my_updateWithNewLocation(location1);
 		
-		locationManager.requestLocationUpdates(provider1, 35, 10,   
-				locationListener);
+		locationManager.requestLocationUpdates(provider1, 35, 10, locationListener);
 		}catch (Exception e) {
 			// TODO: handle exception
 		}

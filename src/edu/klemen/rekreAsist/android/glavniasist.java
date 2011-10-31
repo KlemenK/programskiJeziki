@@ -108,6 +108,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		try{
 			setTemperatura(); // temperatura
 		}catch(Exception f){
+			Toast a= Toast.makeText(this, f.toString(), Toast.LENGTH_LONG);
+			a.show();
 			tvTemperatura.setText("ni internetne povezave");
 		}
 		
@@ -116,8 +118,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		MapView myMapView1 = (MapView)findViewById(R.id.myMapView);
 		mapController = myMapView1.getController();
 		
-		myMapView1.setSatellite(true);
-		myMapView1.setStreetView(true);
+	//	myMapView1.setSatellite(true);
+	//	myMapView1.setStreetView(true);
 		myMapView1.displayZoomControls(false);
 
 		mapController.setZoom(17);
@@ -348,7 +350,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		String stran = new String();
 		int znacka=0;
 		String tempC;
-		String relVlaznost,povpTemp,link;
+		//String relVlaznost,povpTemp,link;
 		
 		
 		
@@ -361,10 +363,10 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		znacka = stran.indexOf("<t>");
 		tempC = stran.substring(znacka+3, stran.indexOf("</t>"));
-		relVlaznost=stran.substring(stran.indexOf("<rh>")+4,stran.indexOf("</rh>"));
+	/*	relVlaznost=stran.substring(stran.indexOf("<rh>")+4,stran.indexOf("</rh>"));
 		povpTemp=stran.substring(stran.indexOf("<tavg>")+6,stran.indexOf("<tavg>"));
 		link=stran.substring(stran.indexOf("<docs_url>")+10,stran.indexOf("<docs_url>"));
-			
+	*/		
 		tvTemperatura.setText(tempC+"°C");
 	}
 
