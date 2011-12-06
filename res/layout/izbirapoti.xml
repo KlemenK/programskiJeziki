@@ -5,7 +5,7 @@
   android:layout_height="match_parent" android:id="@+id/layout_izbirapoti" android:orientation="vertical">
   
     <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="match_parent">
-    	<com.google.android.maps.MapView android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:apiKey="0hbSGfgHC1ZtGCubRaOecG17uX8VbgGIilUU_1w" android:id="@+id/mapviewNova" android:layout_height="650px"></com.google.android.maps.MapView>
+    	<com.google.android.maps.MapView android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:apiKey="0hbSGfgHC1Ztb53v544NWQeDiMvSjSEA1_P2BhA" android:id="@+id/mapviewNova" android:layout_height="650px"></com.google.android.maps.MapView>
     </LinearLayout>
     <LinearLayout android:id="@+id/linearLayout1" android:layout_height="match_parent" android:orientation="horizontal" android:layout_width="match_parent">
         <Button android:text="@string/zazeniPot" android:gravity="center" android:id="@+id/btn_zazeniPot" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"></Button>

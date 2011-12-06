@@ -14,6 +14,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -22,20 +29,12 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-
-import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
-
-import android.content.Context;
-import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 
 public class glavniasist extends MapActivity implements android.view.View.OnClickListener {
 	Button startstop,pavza,novKrog;
@@ -60,7 +59,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	float povSp=0;
 	boolean stoparcaFlag=false;
 	boolean tflag=true;
-	public float MaxSpeed=0;
+	public float maxSpeed=0;
 	LocationManager locationManager;
 	public Calendar koledar;
 	
@@ -105,13 +104,16 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		stoparca.setFormat(null);
 		
-		try{
-			setTemperatura(); // temperatura
-		}catch(Exception f){
-			Toast a= Toast.makeText(this, f.toString(), Toast.LENGTH_LONG);
-			a.show();
-			tvTemperatura.setText("ni internetne povezave");
-		}
+		/*
+		 * 
+		 * tu prie za temperaturo!!!! ASINHRONI TASK POPRAVIT... MECE IZJEMO
+		 * 
+		 * 
+		 * */
+		Asinhrono task= new Asinhrono();
+		task.execute();
+		
+		
 		
 		try{
 		//-----------------------------------------maps--
@@ -191,8 +193,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			hitrost.setText("Hitrost: "+sp+"km/h");
 			speed.add((float)sp);
 			if(maxHitrost((float)sp)==true){
-				MaxSpeed=(float)sp;
-				maxHitrost.setText("Max hitrost: "+MaxSpeed+"km/h");
+				maxSpeed=(float)sp;
+				maxHitrost.setText("Max hitrost: "+maxSpeed+"km/h");
 			}
 			if((locations.size()>=2)){
 	    		
@@ -207,7 +209,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	    		pot.setText("Pot: "+dolzina+"m");
 	    		
 			}
-			//myLocationText.setText("Trenutni položaj je:" + latLongString);
+			//myLocationText.setText("Trenutni poloï¿½aj je:" + latLongString);
 		}
 	}
 	public boolean maxHitrost(float s){
@@ -234,7 +236,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					tflag=false;
 				}else{
 					start=SystemClock.elapsedRealtime();
-					stoparca.setBase(SystemClock.elapsedRealtime());//prviè
+					stoparca.setBase(SystemClock.elapsedRealtime());//prviï¿½
 					stoparca.start();
 					stoparcaFlag=true;
 					pause=true;
@@ -254,20 +256,20 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					test=Toast.makeText(this, dan+"  "+mesec+"  "+leto, Toast.LENGTH_SHORT);
 					test.show();
 					povSp=povprecnaHitrost(speed);
-					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, MaxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto));
-			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, MaxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
+					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, maxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto));
+			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
 					locations.clear();
 					speed.clear();
 					trenKrog=0;
-					MaxSpeed=0;
+					maxSpeed=0;
 					stoparca.stop();
 					stoparca.setBase(SystemClock.elapsedRealtime());
 					flag=true;
 					pause=false;
 					
 					hitrost.setText("Hitrost: "+0.0+"km/h");
-					cas.setText("Èas: ");
-					maxHitrost.setText("Max Hitrost: "+MaxSpeed+"km/h");
+					cas.setText("Cas: ");
+					maxHitrost.setText("Max Hitrost: "+maxSpeed+"km/h");
 					krog.setText("Krog: "+trenKrog);
 					pot.setText("Pot: "+0+"m");
 					
@@ -326,7 +328,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	        
 	        in.close();
 	        page = sb.toString();
-	        System.out.println(page);
+	      //  System.out.println(page);
 	        
 	        
 	        } 
@@ -346,8 +348,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	    
 	    return page;
 	}
-	public void setTemperatura(){
+	public String setTemperatura(){
 		String stran = new String();
+		
 		int znacka=0;
 		String tempC;
 		//String relVlaznost,povpTemp,link;
@@ -363,11 +366,39 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		znacka = stran.indexOf("<t>");
 		tempC = stran.substring(znacka+3, stran.indexOf("</t>"));
+		return tempC;
 	/*	relVlaznost=stran.substring(stran.indexOf("<rh>")+4,stran.indexOf("</rh>"));
 		povpTemp=stran.substring(stran.indexOf("<tavg>")+6,stran.indexOf("<tavg>"));
 		link=stran.substring(stran.indexOf("<docs_url>")+10,stran.indexOf("<docs_url>"));
 	*/		
-		tvTemperatura.setText(tempC+"°C");
+		//Toast.makeText(glavniasist.this, "V temp ", Toast.LENGTH_LONG).show();
+		
+	}
+	
+	
+	private class Asinhrono extends AsyncTask<Void,Void,String> {
+
+
+
+		@Override
+		protected String doInBackground(Void... params) {
+			String tempPrebran="";
+			try{
+				
+				tempPrebran=setTemperatura();
+			}catch(Exception f){
+				tvTemperatura.setText("Error");
+				
+			}
+			return tempPrebran;
+		}
+		protected void onPostExecute(String tretji){
+			//tekst.setText("dsa");
+			tvTemperatura.setText(tretji+"Â°C");
+		//	Toast.makeText(asinhroniTask.this, "Vsota: "+tretji, Toast.LENGTH_LONG).show();
+			
+		}
 	}
 
 }
+

@@ -1,20 +1,35 @@
 package edu.klemen.rekreAsist.android;
 
-import java.sql.Date;
 import java.util.ArrayList;
-
-
-
-
-import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
-
+import java.util.List;
 
 import android.app.Application;
 import android.database.Cursor;
+import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
 
 public class ApplicationExample extends Application {
 	//Step 4.1
 	//Step 4.2 popravi AndroidManifest.xml
+	
+	/*
+	 * widget
+	 */
+	private List<String> news;
+	private int stevec;
+	public List<String> getNews() {
+		return news;
+	}
+	public void setNews(List<String> news) {
+		this.news = news;
+	}
+	public int getStevec() {
+		return stevec;
+	}
+	public void setStevec(int stevec) {
+		this.stevec = stevec;
+	}
+	//konec widget
+	
     public  PodatkiArrayAdapter podatkiList;
 	DBAdapterBaza db;
 	public ArrayList<podatkiZaBazo> lista;

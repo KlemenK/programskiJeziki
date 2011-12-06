@@ -1,16 +1,12 @@
 package edu.klemen.rekreAsist.android;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 
 import com.google.android.maps.GeoPoint;

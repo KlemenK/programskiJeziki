@@ -4,7 +4,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/glavni">
     <LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:orientation="vertical" android:layout_weight="1" android:layout_height="575px">
-        <com.google.android.maps.MapView android:id="@+id/myMapView" android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:layout_height="match_parent" android:apiKey="0hbSGfgHC1ZtGCubRaOecG17uX8VbgGIilUU_1w"></com.google.android.maps.MapView>
+        <com.google.android.maps.MapView android:id="@+id/myMapView" android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:layout_height="match_parent" android:apiKey="0hbSGfgHC1Ztb53v544NWQeDiMvSjSEA1_P2BhA"></com.google.android.maps.MapView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/linearLayout3" android:orientation="vertical" android:gravity="bottom" android:layout_height="wrap_content">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center|left" android:id="@+id/linearLayout4">
