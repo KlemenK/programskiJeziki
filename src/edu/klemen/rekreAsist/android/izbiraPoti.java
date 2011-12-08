@@ -34,6 +34,8 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 	MyPositionOverlay positionOverlay1;
 	ArrayList<Location> locations1;
 	
+
+	
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -138,7 +140,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 	    		//pot.setText("Pot: "+dolzina+"m");
 	    		
 			}
-			//myLocationText.setText("Trenutni položaj je:" + latLongString);
+			//myLocationText.setText("Trenutni poloï¿½aj je:" + latLongString);
 		}
 	}
 	

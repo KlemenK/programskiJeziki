@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 public class rekreasist extends Activity implements OnClickListener {
     private static final int GLAVNO_OKNO_ID = 0;
 	private static final int IZBIRA_POTI_ID = 0;
 	ApplicationExample podatki;
 	/** Called when the activity is first created. */
-	Button izhod,znova,pot,seznam;
+	ImageButton izhod,znova,pot,seznam;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +20,13 @@ public class rekreasist extends Activity implements OnClickListener {
         
         this.setRequestedOrientation(1);
         
+        
         podatki=(ApplicationExample)getApplication();
         
-        izhod=(Button) findViewById(R.id.btnIzhod);
-        znova=(Button) findViewById(R.id.btnZnova);
-        pot=(Button) findViewById(R.id.btnIzberiPot);
-        seznam=(Button) findViewById(R.id.btnSeznam);
+        izhod=(ImageButton) findViewById(R.id.btnIzhod);
+        znova=(ImageButton) findViewById(R.id.btnZnova);
+        pot=(ImageButton) findViewById(R.id.btnIzberiPot);
+        seznam=(ImageButton) findViewById(R.id.btnSeznam);
         
         izhod.setOnClickListener(this);
         znova.setOnClickListener(this);

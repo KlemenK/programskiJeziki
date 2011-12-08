@@ -62,6 +62,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	public float maxSpeed=0;
 	LocationManager locationManager;
 	public Calendar koledar;
+	public int oznacbaPoti=0;
 	
 	
 	@Override
@@ -106,13 +107,14 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		/*
 		 * 
-		 * tu prie za temperaturo!!!! ASINHRONI TASK POPRAVIT... MECE IZJEMO
+		 * tu prie za temperaturo!!!! ASINHRONI TASK POPRAVIT... MECE IZJEMO //popravleno
 		 * 
 		 * 
 		 * */
 		Asinhrono task= new Asinhrono();
-		task.execute();
 		
+		task.execute();
+
 		
 		
 		try{
@@ -172,9 +174,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		dolzina=0;
 		//TextView myLocationText;
 		//myLocationText = (TextView)findViewById(R.id.myLocationText);
-
+		
 		if (location != null) {
-			positionOverlay.setLocation(location);
+			positionOverlay.setLocation(location,oznacbaPoti);
 
 			Double geoLat = location.getLatitude()*1E6;
 			Double geoLng = location.getLongitude()*1E6;
@@ -187,10 +189,14 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		//	double lng = location.getLongitude();
 			//latLongString = "Lat:" + lat + "\nLong:" + lng;
 			locations.add(location);
-			double sp=location.getSpeed()*3.6;
+			double sp=location.getSpeed()*3.6;//pretvorba iz m/s v km/h
 			DecimalFormat te=new DecimalFormat("#.##");
 			sp=Double.valueOf(te.format(sp));
 			hitrost.setText("Hitrost: "+sp+"km/h");
+			if((sp>=0)&&(sp<10)) oznacbaPoti=0;
+			if((sp>=10)&&(sp<25)) oznacbaPoti=1;
+			if((sp>=25)) oznacbaPoti=2;
+			//-------------------------------------------------------------------||||||||||||||||||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 			speed.add((float)sp);
 			if(maxHitrost((float)sp)==true){
 				maxSpeed=(float)sp;
@@ -361,7 +367,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		{
 			stran= executeHttpGet();
 		}
-			catch (Exception eee) {}
+		catch (Exception e) {}
 		
 		
 		znacka = stran.indexOf("<t>");
@@ -387,14 +393,14 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 				
 				tempPrebran=setTemperatura();
 			}catch(Exception f){
-				tvTemperatura.setText("Error");
-				
+				//tvTemperatura.setText("Error");
+				return "ni internetne povezave";
 			}
-			return tempPrebran;
+			return tempPrebran+"°C";
 		}
 		protected void onPostExecute(String tretji){
 			//tekst.setText("dsa");
-			tvTemperatura.setText(tretji+"°C");
+			tvTemperatura.setText(tretji);
 		//	Toast.makeText(asinhroniTask.this, "Vsota: "+tretji, Toast.LENGTH_LONG).show();
 			
 		}

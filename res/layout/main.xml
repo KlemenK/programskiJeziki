@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-<Button android:layout_width="match_parent" android:text="Seznam" android:id="@+id/btnSeznam" android:layout_height="120dip"></Button>
-<Button android:layout_width="match_parent" android:text="Začni znova" android:id="@+id/btnZnova" android:layout_height="120dip"></Button>
-<Button android:layout_width="match_parent" android:text="Izberi pot" android:id="@+id/btnIzberiPot" android:layout_height="120dip"></Button>
-<Button android:layout_width="match_parent" android:text="Izhod" android:id="@+id/btnIzhod" android:layout_height="120dip"></Button>
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/btnSeznam"
+            android:layout_width="match_parent"
+            android:layout_height="120dip"
+            android:layout_weight="1"
+            android:background="@drawable/seznamikona" />
+
+        <ImageButton
+            android:id="@+id/btnZnova"
+            android:layout_width="match_parent"
+            android:layout_height="120dip"
+            android:layout_weight="1"
+            android:background="@drawable/ludek" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/btnIzberiPot"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center|top"
+            android:layout_weight="0.65"
+            android:background="@drawable/potikona"
+            />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_weight="0.65"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnIzhod"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.65"
+            android:background="@drawable/izhodikona" />
+
+    </LinearLayout>
+
 </LinearLayout>
