@@ -75,6 +75,9 @@ public class MyPositionOverlay extends Overlay {
     	        path.moveTo(p2.x, p2.y);
     	        path.lineTo(p1.x,p1.y);
     	        Paint crta=new Paint();
+    	        
+    	        
+    	        
     	        if(oznaka==0) crta.setARGB(250, 0, 0, 0);
     	        if(oznaka==1) crta.setARGB(250, 0, 255, 0);
     	        if(oznaka==2) crta.setARGB(250, 255, 0, 0);

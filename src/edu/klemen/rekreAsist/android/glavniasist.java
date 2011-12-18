@@ -62,6 +62,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	public float maxSpeed=0;
 	LocationManager locationManager;
 	public Calendar koledar;
+	
 	public int oznacbaPoti=0;
 	
 	
@@ -105,13 +106,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		stoparca.setFormat(null);
 		
-		/*
-		 * 
-		 * tu prie za temperaturo!!!! ASINHRONI TASK POPRAVIT... MECE IZJEMO //popravleno
-		 * 
-		 * 
-		 * */
-		Asinhrono task= new Asinhrono();
+
+		Asinhrono task= new Asinhrono();//temperatura
 		
 		task.execute();
 
@@ -180,6 +176,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 
 			Double geoLat = location.getLatitude()*1E6;
 			Double geoLng = location.getLongitude()*1E6;
+			
+			podatki.addDBPot(new PodatkiZaPoti(geoLat, geoLng));//dodam tocko za pot
+			
 			GeoPoint point = new GeoPoint(geoLat.intValue(), 
 					geoLng.intValue());
 
@@ -192,7 +191,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			double sp=location.getSpeed()*3.6;//pretvorba iz m/s v km/h
 			DecimalFormat te=new DecimalFormat("#.##");
 			sp=Double.valueOf(te.format(sp));
-			hitrost.setText("Hitrost: "+sp+"km/h");
+			hitrost.setText("Hitrost: "+sp+"km/h "+oznacbaPoti);
 			if((sp>=0)&&(sp<10)) oznacbaPoti=0;
 			if((sp>=10)&&(sp<25)) oznacbaPoti=1;
 			if((sp>=25)) oznacbaPoti=2;

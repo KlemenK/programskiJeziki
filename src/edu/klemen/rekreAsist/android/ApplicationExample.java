@@ -53,7 +53,7 @@ public class ApplicationExample extends Application {
         lista= new ArrayList<podatkiZaBazo>();
         listaPoti= new ArrayList<PodatkiZaPoti>();
  
-        initPoti();
+        //initPoti();
         
         fillFromDB();
         podatkiList = new PodatkiArrayAdapter(this, R.layout.seznam_podatkov,lista);//podatkiList-seznam, R-layout ki bo izpiso, s keriga seznama
