@@ -57,6 +57,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	public long start = 0;//SystemClock.elapsedRealtime();
 	public long end = 0;
 	float povSp=0;
+	float kalorije=0;
 	boolean stoparcaFlag=false;
 	boolean tflag=true;
 	public float maxSpeed=0;
@@ -258,9 +259,10 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					int dan=kol.get(Calendar.DATE);
 					int mesec= kol.get(Calendar.MONTH)+1;
 					int leto= kol.get(Calendar.YEAR);
-					test=Toast.makeText(this, dan+"  "+mesec+"  "+leto, Toast.LENGTH_SHORT);
-					test.show();
+//					test=Toast.makeText(this, dan+"  "+mesec+"  "+leto, Toast.LENGTH_SHORT);
+//					test.show();
 					povSp=povprecnaHitrost(speed);
+					kalorije=priblkalorije(povSp, stoparca.getText().toString());//izračun kalorij
 					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, maxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto));
 			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
 					locations.clear();
@@ -278,8 +280,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					krog.setText("Krog: "+trenKrog);
 					pot.setText("Pot: "+0+"m");
 					
-					test=Toast.makeText(this, "velikost polja"+poljeRekreacij.size(), Toast.LENGTH_SHORT);
-					test.show();
+//					test=Toast.makeText(this, "velikost polja"+poljeRekreacij.size(), Toast.LENGTH_SHORT);
+//					test.show();
 				}
 			}
 			break;
@@ -302,6 +304,34 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			break;
 		}
 		
+	}
+	private int rang(float h){
+		if((h>4)&&(h<6)) return 90;
+		if((h>6)&&(h<10)) return 230;
+		if((h>10)&&(h<15)) return 410;
+		if(h>15) return 520;
+		return 0;
+	}
+	private float priblkalorije(float povhitr, String cas){
+		int min=0,h=0;
+		String[] ca;
+		ca=cas.split(":");
+		if(ca.length==3){
+			h= Integer.parseInt(ca[0]);
+			min = Integer.parseInt(ca[1]);
+		}
+		if(ca.length==2){
+			min = Integer.parseInt(ca[0]);
+		}
+		
+		float cal=0;
+		
+		if(h!=0){
+			cal=cal+rang(povhitr);
+		}
+		cal=cal+((min*rang(povhitr))/60);
+
+		return cal;
 	}
 	private float povprecnaHitrost(List<Float> s){
 		float v=0;
