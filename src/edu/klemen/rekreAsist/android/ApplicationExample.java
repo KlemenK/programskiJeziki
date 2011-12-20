@@ -17,13 +17,23 @@ public class ApplicationExample extends Application {
 	/*
 	 * widget
 	 */
-	private List<String> news;
+	private List<PodatkiSportniKoledar> news;
 	private int stevec;
-	public List<String> getNews() {
+	
+	private ArrayList<PodatkiSportniKoledar> podatkiKoledarWidget;
+	
+	public void setPodatkiKoledarWidget(ArrayList<PodatkiSportniKoledar> podatkiKoledarWidget) {
+		this.podatkiKoledarWidget = podatkiKoledarWidget;
+	}
+	public ArrayList<PodatkiSportniKoledar> getPodatkiKoledarWidget() {
+		return podatkiKoledarWidget;
+	}
+	
+	public List<PodatkiSportniKoledar> getNews() {
 		return news;
 	}
-	public void setNews(List<String> news) {
-		this.news = news;
+	public void setNews(List<PodatkiSportniKoledar> list) {
+		this.news = list;
 	}
 	public int getStevec() {
 		return stevec;
@@ -159,5 +169,6 @@ public class ApplicationExample extends Application {
 		c.close(); 
 		dbPoti.close();
 	}
+
 
 }

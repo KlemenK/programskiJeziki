@@ -13,12 +13,11 @@ public class UpdateWidgetService extends Service {
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
-		if(app==null)
-			app = (ApplicationExample) getApplicationContext();
+		if(app==null) app = (ApplicationExample) getApplicationContext();
 		
 		RSSReader rss = new RSSReader();
-		if(app.getNews()==null || app.getNews().size()==0)
-			app.setNews(rss.readNews());
+		
+		if(app.getPodatkiKoledarWidget()==null || app.getPodatkiKoledarWidget().size()==0) app.setNews(rss.readNews());
 		
 		
 		
@@ -29,9 +28,13 @@ public class UpdateWidgetService extends Service {
 				.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
 		if (appWidgetIds.length > 0) {
 			for (int widgetId : appWidgetIds) {
-				RemoteViews remoteViews = new RemoteViews(getPackageName(),
-						R.layout.widget_layout);
-				remoteViews.setTextViewText(R.id.TextView01, app.getNews().get(app.getStevec()%app.getNews().size()));
+				RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_layout);
+				
+				remoteViews.setTextViewText(R.id.textWidgetDatum, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).datum);
+				remoteViews.setTextViewText(R.id.textWidgetKraj, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).kraj);
+				remoteViews.setTextViewText(R.id.textWidgetNaziv, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).naziv);
+				remoteViews.setTextViewText(R.id.textWidgetOpis, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).opis);
+				
 				app.setStevec(app.getStevec()+1);
 				appWidgetManager.updateAppWidget(widgetId, remoteViews);
 			}

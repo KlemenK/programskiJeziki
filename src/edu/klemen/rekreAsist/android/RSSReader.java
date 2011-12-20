@@ -20,109 +20,135 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class RSSReader {
+import android.util.Log;
+import android.widget.Toast;
 
-	private static RSSReader instance = null;
+public class RSSReader {
 
 	public RSSReader() {
 	}
+//	private static RSSReader instance = null;
+	private static final String SOAP_ACTION="http://sportniKoledar.klemen.edu/preberiPodatke";
+	private static final String METHOD_NAME="preberiPodatke";
+	private static final String NAMESPACE="http://sportniKoledar.klemen.edu";
+	private static final String URL="http://192.168.1.100:8080/SportniKoledar/services/PreberiPodatke?wsdl";
+	private String rezultat="";
+//	public static RSSReader getInstance() {
+//		if (instance == null) {
+//			instance = new RSSReader();
+//		}
+//		return instance;
+//	}
 
-	public static RSSReader getInstance() {
-		if (instance == null) {
-			instance = new RSSReader();
-		}
-		return instance;
-	}
-
-	public List<String> readNews() {
-		List<String> news = new ArrayList<String>();
+	public List<PodatkiSportniKoledar> readNews() {
+		List<PodatkiSportniKoledar> news = new ArrayList<PodatkiSportniKoledar>();
+		
+		SoapObject request= new SoapObject(NAMESPACE, METHOD_NAME);
+			SoapSerializationEnvelope envelope= new SoapSerializationEnvelope(SoapEnvelope.VER11);
+			envelope.dotNet=false;
+			envelope.setOutputSoapObject(request);
+			HttpTransportSE httpTransport= new HttpTransportSE(URL);
 		try {
-
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
-			URL u = new URL("http://www.feri.uni-mb.si/rss/novice.xml"); // your feed url
 			
-			/*BufferedReader r = new BufferedReader(
-	                new InputStreamReader(u.openStream(), "UTF-8"));
-
-			String document = "";
-			String line = "";
-			while((line = r.readLine())!=null)
-				document += line;
 			
-			document = document.replace("&#353;", "s");
-			document = document.replace("&#352;", "S");
-			document = document.replace("&#269;", "c");
-			document = document.replace("&#268;", "C");
-			document = document.replace("&#382;", "z");
-			document = document.replace("&#381;", "Z");
+			httpTransport.call(SOAP_ACTION, envelope);
+			Object response= envelope.getResponse();
+			rezultat= response.toString();
+			Log.e(""+rezultat.length(), rezultat.substring(0, 200));
 			
-			Document doc = builder.parse(document);*/
-			Document doc = builder.parse(u.openStream());
 			
-			System.out.println("Encoding: "+doc.getXmlEncoding());
-			
-			NodeList nodes = doc.getElementsByTagName("item");
-
-			for (int i = 0; i < nodes.getLength(); i++) {
-
-				Element element = (Element) nodes.item(i);
-				news.add(getElementValue(element, "title"));
-//				System.out.println("Title: "
-//						+ getElementValue(element, "title"));
-				/*System.out.println("Link: " + getElementValue(element, "link"));
-				System.out.println("Publish Date: "
-						+ getElementValue(element, "pubDate"));
-				System.out.println("author: "
-						+ getElementValue(element, "dc:creator"));
-				System.out.println("comments: "
-						+ getElementValue(element, "wfw:comment"));
-				System.out.println("description: "
-						+ getElementValue(element, "description"));
-				System.out.println();*/
-			}// for
 		}// try
 		catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		// podatki ;; objekti ;::;
+		PodatkiSportniKoledar vmesni;
+		String[] objekti;
+		String[] razb;
+		String[] podatkiObjektov;
+		objekti=rezultat.split(";::;");                  Log.d(""+objekti.length,"");
+
+		for(int i=0;i<objekti.length;i++){
+
+			vmesni= new PodatkiSportniKoledar();
+			podatkiObjektov=objekti[i].split(";;");
+			
+			vmesni.datum=podatkiObjektov[0];
+			vmesni.kraj=podatkiObjektov[1];
+			vmesni.sport=podatkiObjektov[2];
+			vmesni.naziv=podatkiObjektov[3];
+			vmesni.url=podatkiObjektov[4];
+			vmesni.email=podatkiObjektov[5];
+			vmesni.opis=podatkiObjektov[6];
+			vmesni.organizator=podatkiObjektov[7];
+			
+//			String test="pe;e; ; ";
+//			razb=test.split(";");
+//			Log.d(""+razb.length, "test");
+			razb=podatkiObjektov[8].split("|");
+			for(int j=0;j<razb.length;j++){
+				if(razb[j].contains("@")){//pridobim email iz kontaktov če še ni bil izluščen
+					if(!(vmesni.email.contains("@"))) vmesni.email=razb[j];//če še nimamo emaila ga vpišemo
+				}else if(razb[j].contains("0")) vmesni.telefonska=razb[j];//pridobim telefonsko iz kontaktov
+				else vmesni.kontakt=razb[j];//pridobim telefonsko iz kontaktov
+			}
+			news.add(vmesni);
+//			Log.d("datum: "+vmesni.datum,"");
+//			Log.d("kraj: "+vmesni.kraj,"");
+//			Log.d("sport: "+vmesni.sport,"");
+//			Log.d("naziv: "+vmesni.naziv,"");
+//			Log.d("url "+vmesni.url,"");
+//			Log.d("email "+vmesni.email,"");
+//			Log.d("opis "+vmesni.opis,"");
+//			Log.d("organizator "+vmesni.organizator,"");
+//			Log.d("telefonska "+vmesni.telefonska,"");
+//			Log.d("kontakt "+vmesni.kontakt,"");
+//			Log.d("----------------------------","");
+			
+		}
+		
 		
 		return news;
 
 	}
 
-	private String getCharacterDataFromElement(Element e) {
-		try {
-			Node child = e.getFirstChild();
-			if (child instanceof CharacterData) {
-				CharacterData cd = (CharacterData) child;
-				return cd.getData();
-			}
-		} catch (Exception ex) {
+//	private String getCharacterDataFromElement(Element e) {
+//		try {
+//			Node child = e.getFirstChild();
+//			if (child instanceof CharacterData) {
+//				CharacterData cd = (CharacterData) child;
+//				return cd.getData();
+//			}
+//		} catch (Exception ex) {
+//
+//		}
+//		return "";
+//	} // private String getCharacterDataFromElement
 
-		}
-		return "";
-	} // private String getCharacterDataFromElement
+//	protected float getFloat(String value) {
+//		if (value != null && !value.equals("")) {
+//			return Float.parseFloat(value);
+//		}
+//		return 0;
+//	}
+//
+//	protected String getElementValue(Element parent, String label) {
+//		return getCharacterDataFromElement((Element) parent
+//				.getElementsByTagName(label).item(0));
+//	}
 
-	protected float getFloat(String value) {
-		if (value != null && !value.equals("")) {
-			return Float.parseFloat(value);
-		}
-		return 0;
-	}
-
-	protected String getElementValue(Element parent, String label) {
-		return getCharacterDataFromElement((Element) parent
-				.getElementsByTagName(label).item(0));
-	}
-
-	public static void main(String[] args) {
-		RSSReader reader = RSSReader.getInstance();
-		reader.readNews();
-	}
+//	public static void main(String[] args) {
+//		RSSReader reader = RSSReader.getInstance();
+//		reader.readNews();
+//	}
 }
