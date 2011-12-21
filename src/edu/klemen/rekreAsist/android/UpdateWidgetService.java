@@ -17,7 +17,7 @@ public class UpdateWidgetService extends Service {
 		
 		RSSReader rss = new RSSReader();
 		
-		if(app.getPodatkiKoledarWidget()==null || app.getPodatkiKoledarWidget().size()==0) app.setNews(rss.readNews());
+		if(app.getPodatkiKoledarWidget()==null || app.getPodatkiKoledarWidget().size()==0) app.setPodatkiKoledarWidget(rss.readNews());
 		
 		
 		

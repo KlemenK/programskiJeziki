@@ -16,25 +16,38 @@ import com.google.android.maps.Overlay;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class izbiraPoti extends MapActivity implements android.view.View.OnClickListener {
+public class izbiraPoti extends MapActivity/* implements android.view.View.OnClickListener */{
 	private static final int GLAVNO_OKNO_ID = 0;
 	Button nazaj,zazeni;
 	
 	MapController mapController1;
 	MyPositionOverlay positionOverlay1;
 	ArrayList<Location> locations1;
+	GeoPoint konec, zacetek;
+	MapView myMapView;
 	
-
+	
+	class MapOverlay extends Overlay
+	{
+		@Override
+		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+			// TODO Auto-generated method stub
+			super.draw(canvas, mapView, shadow);
+			
+		}
+	}
 	
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -45,30 +58,31 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		
 		nazaj=(Button) findViewById(R.id.btnNazaj);
 		zazeni=(Button) findViewById(R.id.btn_zazeniPot);
+//		nazaj.setOnClickListener(this);
+//		zazeni.setOnClickListener(this);
 		
-		nazaj.setOnClickListener(this);
-		zazeni.setOnClickListener(this);
 		
 		locations1=new ArrayList<Location>();
 		try{
 		//-----------------------------------------maps--
-		MapView myMapView = (MapView)findViewById(R.id.mapviewNova);
+		myMapView = (MapView)findViewById(R.id.mapviewNova);
 		mapController1 = myMapView.getController();
 
-//		myMapView.setSatellite(true);
-//		myMapView.setStreetView(true);
+
 		myMapView.displayZoomControls(false);
 
+
 		mapController1.setZoom(17);
+		
 
 
 		LocationManager locationManager;
 		String context = Context.LOCATION_SERVICE;
 		locationManager = (LocationManager)getSystemService(context);
 		// Add the MyPositionOverlay
-		positionOverlay1 = new MyPositionOverlay();
-		List<Overlay> overlays = myMapView.getOverlays();
-		overlays.add(positionOverlay1);
+//		positionOverlay1 = new MyPositionOverlay();
+//		List<Overlay> overlays = myMapView.getOverlays();
+//		overlays.add(positionOverlay1);
 
 		Criteria criteria1 = new Criteria();
 		criteria1.setAccuracy(Criteria.ACCURACY_FINE);
@@ -122,6 +136,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 					geoLng.intValue());
 
 			mapController1.animateTo(point);
+			
 
 			//double lat = location.getLatitude();
 		//	double lng = location.getLongitude();
@@ -143,24 +158,47 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 			//myLocationText.setText("Trenutni polo�aj je:" + latLongString);
 		}
 	}
-	
 	@Override
-	public void onClick(View v) {
+	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		switch (v.getId()) {
-		case R.id.btn_zazeniPot:
-			Intent zagon=new Intent(this,glavniasist.class);
-			startActivityForResult(zagon,GLAVNO_OKNO_ID);
-			//startActivity(zagon);
-			break;
-		case R.id.btnNazaj:
-			setResult(RESULT_CANCELED);
-			finish();
-			break;
-		default:
-			break;
-		}
+//		if(event.getAction()==1){
+//			konec=myMapView.getProjection().fromPixels((int)event.getX(),(int)event.getY());
+//			Toast.makeText(getBaseContext(), "lat:"+konec.getLatitudeE6()/1E6+" long:"+konec.getLongitudeE6()/1E6, Toast.LENGTH_LONG).show();
+//		}
+		Toast.makeText(getBaseContext(), "juhu dela", Toast.LENGTH_SHORT).show();
+	
+		
+		if (event.getAction() == 1) {                
+            GeoPoint p = myMapView.getProjection().fromPixels(
+                (int) event.getX(),
+                (int) event.getY());
+                Toast.makeText(getBaseContext(), 
+                    p.getLatitudeE6() / 1E6 + "," + 
+                    p.getLongitudeE6() /1E6 , 
+                    Toast.LENGTH_SHORT).show();
+        }         
+		
+		return true;
 	}
+	
+//	@Override
+//	public void onClick(View v) {
+//		// TODO Auto-generated method stub
+//		
+//		switch (v.getId()) {
+//		case R.id.btn_zazeniPot:
+//			Intent zagon=new Intent(this,glavniasist.class);
+//			startActivityForResult(zagon,GLAVNO_OKNO_ID);
+//			//startActivity(zagon);
+//			break;
+//		case R.id.btnNazaj:
+//			setResult(RESULT_CANCELED);
+//			finish();
+//			break;
+//		default:
+//			break;
+//		}
+//	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 		switch (requestCode) {

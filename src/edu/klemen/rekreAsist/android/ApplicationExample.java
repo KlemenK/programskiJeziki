@@ -17,24 +17,25 @@ public class ApplicationExample extends Application {
 	/*
 	 * widget
 	 */
-	private List<PodatkiSportniKoledar> news;
+	//private List<PodatkiSportniKoledar> news;
 	private int stevec;
+	private long trenutnID;
 	
-	private ArrayList<PodatkiSportniKoledar> podatkiKoledarWidget;
+	private List<PodatkiSportniKoledar> podatkiKoledarWidget;
 	
-	public void setPodatkiKoledarWidget(ArrayList<PodatkiSportniKoledar> podatkiKoledarWidget) {
-		this.podatkiKoledarWidget = podatkiKoledarWidget;
+	public void setPodatkiKoledarWidget(List<PodatkiSportniKoledar> list) {
+		this.podatkiKoledarWidget = list;
 	}
-	public ArrayList<PodatkiSportniKoledar> getPodatkiKoledarWidget() {
+	public List<PodatkiSportniKoledar> getPodatkiKoledarWidget() {
 		return podatkiKoledarWidget;
 	}
 	
-	public List<PodatkiSportniKoledar> getNews() {
-		return news;
-	}
-	public void setNews(List<PodatkiSportniKoledar> list) {
-		this.news = list;
-	}
+//	public List<PodatkiSportniKoledar> getNews() {
+//		return news;
+//	}
+//	public void setNews(List<PodatkiSportniKoledar> list) {
+//		this.news = list;
+//	}
 	public int getStevec() {
 		return stevec;
 	}
@@ -108,9 +109,19 @@ public class ApplicationExample extends Application {
 
 	public void dodajPodatke(podatkiZaBazo tmp)//za rekreacije
 	{
-		lista.add(tmp);
-		addDB(tmp);
+		lista.add(tmp);//orginal
+		addDB(tmp);//orginal
+		
+		
+		
+		for(int i=0;i<listaPoti.size();i++){
+			listaPoti.get(i).setID(trenutnID);
+			addDBPot(listaPoti.get(i));
+		}
 	}
+	
+	
+	
 	public void dodajPodatkePot(PodatkiZaPoti tmp)//za poti
 	{
 		listaPoti.add(tmp);
@@ -143,14 +154,15 @@ public class ApplicationExample extends Application {
 	public void addDB(podatkiZaBazo s) {
 		db.open();
 		s.setID(db.insertPodatki(s));
+		trenutnID=s.id;
 		db.close();	
 	}
 	public void addDBPot(PodatkiZaPoti s) {
 		dbPoti.open();
-		s.setID(dbPoti.insertPodatki(s));
+			dbPoti.insertPodatki(s);
 		dbPoti.close();	
 	}
-
+	
 	public void getPotIzDB(int index) {//vrnem točke določene poti
 		dbPoti.open();
 		PodatkiZaPoti tmp;
@@ -169,6 +181,7 @@ public class ApplicationExample extends Application {
 		c.close(); 
 		dbPoti.close();
 	}
+
 
 
 }

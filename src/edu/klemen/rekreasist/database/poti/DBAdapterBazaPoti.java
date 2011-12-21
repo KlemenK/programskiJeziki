@@ -33,8 +33,8 @@ public class DBAdapterBazaPoti implements BaseColumns {
 	
 
 
-	public static final  String TABLE="podatek1";
-	public static final  String TABELA_PODATKI="podatki2";
+	public static final  String TABLE="podatkipot";
+	public static final  String TABELA_PODATKI="podatkipot1";
 
 
 	private final Context context;

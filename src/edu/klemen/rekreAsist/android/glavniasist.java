@@ -185,8 +185,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 
 			mapController.animateTo(point);
 
-			//double lat = location.getLatitude();
-		//	double lng = location.getLongitude();
+			double lat = location.getLatitude();
+			double lng = location.getLongitude();
+			podatki.listaPoti.add(new PodatkiZaPoti(lat, lng));
 			//latLongString = "Lat:" + lat + "\nLong:" + lng;
 			locations.add(location);
 			double sp=location.getSpeed()*3.6;//pretvorba iz m/s v km/h
@@ -241,6 +242,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					pause=true;
 					tflag=false;
 				}else{
+					locations.clear();
 					start=SystemClock.elapsedRealtime();
 					stoparca.setBase(SystemClock.elapsedRealtime());//prvi�
 					stoparca.start();
@@ -263,7 +265,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 //					test.show();
 					povSp=povprecnaHitrost(speed);
 					kalorije=priblkalorije(povSp, stoparca.getText().toString());//izračun kalorij
+					
 					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, maxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto));
+					
 			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
 					locations.clear();
 					speed.clear();
@@ -280,7 +284,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					krog.setText("Krog: "+trenKrog);
 					pot.setText("Pot: "+0+"m");
 					
-//					test=Toast.makeText(this, "velikost polja"+poljeRekreacij.size(), Toast.LENGTH_SHORT);
+//					test=Toast.makeText(this, "stvrstic:"+po, Toast.LENGTH_SHORT);
 //					test.show();
 				}
 			}
@@ -315,6 +319,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	private float priblkalorije(float povhitr, String cas){
 		int min=0,h=0;
 		String[] ca;
+		Toast.makeText(this, "kalorije "+cas, Toast.LENGTH_SHORT).show();
 		ca=cas.split(":");
 		if(ca.length==3){
 			h= Integer.parseInt(ca[0]);
@@ -330,6 +335,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			cal=cal+rang(povhitr);
 		}
 		cal=cal+((min*rang(povhitr))/60);
+		Toast.makeText(this, "kalorije "+cal, Toast.LENGTH_SHORT).show();
 
 		return cal;
 	}
