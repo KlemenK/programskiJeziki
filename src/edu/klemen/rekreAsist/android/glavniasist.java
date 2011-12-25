@@ -57,7 +57,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	public long start = 0;//SystemClock.elapsedRealtime();
 	public long end = 0;
 	float povSp=0;
-	float kalorije=0;
+	double kalorije=0.0;
 	boolean stoparcaFlag=false;
 	boolean tflag=true;
 	public float maxSpeed=0;
@@ -266,7 +266,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					povSp=povprecnaHitrost(speed);
 					kalorije=priblkalorije(povSp, stoparca.getText().toString());//izračun kalorij
 					
-					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, maxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto));
+					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, maxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto,kalorije));
 					
 			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
 					locations.clear();

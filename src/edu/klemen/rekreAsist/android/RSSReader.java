@@ -11,37 +11,24 @@ package edu.klemen.rekreAsist.android;
 
  *
  */
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-import org.w3c.dom.CharacterData;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import android.util.Log;
-import android.widget.Toast;
 
 public class RSSReader {
 
-	public RSSReader() {
-	}
+	public RSSReader() {}
 //	private static RSSReader instance = null;
 	private static final String SOAP_ACTION="http://sportniKoledar.klemen.edu/preberiPodatke";
 	private static final String METHOD_NAME="preberiPodatke";
 	private static final String NAMESPACE="http://sportniKoledar.klemen.edu";
-	private static final String URL="http://192.168.1.100:8080/SportniKoledar/services/PreberiPodatke?wsdl";
+	private static final String URL="http://192.168.1.6:8080/SportniKoledar/services/PreberiPodatke?wsdl";
 	private String rezultat="";
 //	public static RSSReader getInstance() {
 //		if (instance == null) {
@@ -87,7 +74,7 @@ public class RSSReader {
 			vmesni.kraj=podatkiObjektov[1];
 			vmesni.sport=podatkiObjektov[2];
 			vmesni.naziv=podatkiObjektov[3];
-			vmesni.url=podatkiObjektov[4];
+			vmesni.url=podatkiObjektov[4].replace(" ", "");
 			vmesni.email=podatkiObjektov[5];
 			vmesni.opis=podatkiObjektov[6];
 			vmesni.organizator=podatkiObjektov[7];
@@ -97,10 +84,9 @@ public class RSSReader {
 //			Log.d(""+razb.length, "test");
 			razb=podatkiObjektov[8].split("|");
 			for(int j=0;j<razb.length;j++){
-				if(razb[j].contains("@")){//pridobim email iz kontaktov če še ni bil izluščen
-					if(!(vmesni.email.contains("@"))) vmesni.email=razb[j];//če še nimamo emaila ga vpišemo
+				if(razb[j].contains("@")){ vmesni.email=razb[j];//pridobim email iz kontaktov če še ni bil izluščen	
 				}else if(razb[j].contains("0")) vmesni.telefonska=razb[j];//pridobim telefonsko iz kontaktov
-				else vmesni.kontakt=razb[j];//pridobim telefonsko iz kontaktov
+				else vmesni.kontakt=razb[j].replace("kontaktna oseba-e:", "");//pridobim kontakt iz kontaktov
 			}
 			news.add(vmesni);
 //			Log.d("datum: "+vmesni.datum,"");

@@ -25,10 +25,11 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class izbiraPoti extends MapActivity/* implements android.view.View.OnClickListener */{
+public class izbiraPoti extends MapActivity implements android.view.View.OnClickListener, OnTouchListener{
 	private static final int GLAVNO_OKNO_ID = 0;
 	Button nazaj,zazeni;
 	
@@ -58,8 +59,13 @@ public class izbiraPoti extends MapActivity/* implements android.view.View.OnCli
 		
 		nazaj=(Button) findViewById(R.id.btnNazaj);
 		zazeni=(Button) findViewById(R.id.btn_zazeniPot);
-//		nazaj.setOnClickListener(this);
-//		zazeni.setOnClickListener(this);
+//		myMapView=(MapView) findViewById(R.id.mapviewNova);
+		
+		nazaj.setOnClickListener(this);
+		zazeni.setOnClickListener(this);
+		
+		
+		
 		
 		
 		locations1=new ArrayList<Location>();
@@ -67,7 +73,9 @@ public class izbiraPoti extends MapActivity/* implements android.view.View.OnCli
 		//-----------------------------------------maps--
 		myMapView = (MapView)findViewById(R.id.mapviewNova);
 		mapController1 = myMapView.getController();
-
+		
+		
+		myMapView.setOnTouchListener(this);
 
 		myMapView.displayZoomControls(false);
 
@@ -158,47 +166,25 @@ public class izbiraPoti extends MapActivity/* implements android.view.View.OnCli
 			//myLocationText.setText("Trenutni polo�aj je:" + latLongString);
 		}
 	}
+	
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public void onClick(View v) {
 		// TODO Auto-generated method stub
-//		if(event.getAction()==1){
-//			konec=myMapView.getProjection().fromPixels((int)event.getX(),(int)event.getY());
-//			Toast.makeText(getBaseContext(), "lat:"+konec.getLatitudeE6()/1E6+" long:"+konec.getLongitudeE6()/1E6, Toast.LENGTH_LONG).show();
-//		}
-		Toast.makeText(getBaseContext(), "juhu dela", Toast.LENGTH_SHORT).show();
-	
 		
-		if (event.getAction() == 1) {                
-            GeoPoint p = myMapView.getProjection().fromPixels(
-                (int) event.getX(),
-                (int) event.getY());
-                Toast.makeText(getBaseContext(), 
-                    p.getLatitudeE6() / 1E6 + "," + 
-                    p.getLongitudeE6() /1E6 , 
-                    Toast.LENGTH_SHORT).show();
-        }         
-		
-		return true;
+		switch (v.getId()) {
+		case R.id.btn_zazeniPot:
+			Intent zagon=new Intent(this,glavniasist.class);
+			startActivityForResult(zagon,GLAVNO_OKNO_ID);
+			//startActivity(zagon);
+			break;
+		case R.id.btnNazaj:
+			setResult(RESULT_CANCELED);
+			finish();
+			break;
+		default:
+			break;
+		}
 	}
-	
-//	@Override
-//	public void onClick(View v) {
-//		// TODO Auto-generated method stub
-//		
-//		switch (v.getId()) {
-//		case R.id.btn_zazeniPot:
-//			Intent zagon=new Intent(this,glavniasist.class);
-//			startActivityForResult(zagon,GLAVNO_OKNO_ID);
-//			//startActivity(zagon);
-//			break;
-//		case R.id.btnNazaj:
-//			setResult(RESULT_CANCELED);
-//			finish();
-//			break;
-//		default:
-//			break;
-//		}
-//	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 		switch (requestCode) {
@@ -213,6 +199,25 @@ public class izbiraPoti extends MapActivity/* implements android.view.View.OnCli
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		
+		Toast.makeText(getBaseContext(), "juhu dela", Toast.LENGTH_SHORT).show();
+
+		if (event.getAction() == 1) {                
+            GeoPoint p = myMapView.getProjection().fromPixels(
+                (int) event.getX(),
+                (int) event.getY());
+                Toast.makeText(getBaseContext(), 
+                    p.getLatitudeE6() / 1E6 + "," + 
+                    p.getLongitudeE6() /1E6 , 
+                    Toast.LENGTH_SHORT).show();
+        }
+		
+		return false;
+
 	}
 
 }

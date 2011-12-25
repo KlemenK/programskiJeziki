@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dip"
-    android:background="@drawable/widgetbg"
-    android:gravity="center"
+    android:background="@drawable/widgetodzadje"
+    android:gravity="bottom|center"
     android:orientation="vertical" >
+    android:onClick="Klik"
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -18,7 +19,7 @@
             android:id="@+id/textWidgetDatum"
             style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_margin="4dip"
             android:layout_weight="1"
@@ -31,7 +32,7 @@
             android:id="@+id/textWidgetKraj"
             style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_gravity="center|left"
             android:layout_margin="4dip"
             android:layout_weight="1"
@@ -44,13 +45,13 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="bottom"
+        android:layout_weight="0.78"
         android:gravity="center"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/textWidgetNaziv"
-            android:layout_width="290dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -60,7 +61,7 @@
 
         <TextView
             android:id="@+id/textWidgetOpis"
-            android:layout_width="290dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:drawableTop="@drawable/crtavodoravno"
@@ -68,11 +69,11 @@
 
         <Button
             android:id="@+id/btnWidget"
-            android:layout_width="294dp"
+            android:layout_width="match_parent"
             android:layout_height="19dp"
+            android:layout_weight="0.12"
             android:background="@drawable/widgetbtn"
             android:text="Osvezi/naseldnji" />
-
     </LinearLayout>
 
 </LinearLayout>

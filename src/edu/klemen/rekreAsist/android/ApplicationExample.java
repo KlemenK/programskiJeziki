@@ -76,10 +76,10 @@ public class ApplicationExample extends Application {
 	public void init()
 	{
 		//testni podatki
-		lista.add(new podatkiZaBazo(5202,9,5,14,"35:55","5.6.2011"));
-		lista.add(new podatkiZaBazo(6020,16,2,25,"43:45","7.6.2011"));
-		lista.add(new podatkiZaBazo(370,13,2,18,"00:55","7.6.2011"));
-		lista.add(new podatkiZaBazo(650,7,2,10,"02:45","9.6.2011"));
+		lista.add(new podatkiZaBazo(5202,9,5,14,"35:55","5.6.2011",5));
+		lista.add(new podatkiZaBazo(6020,16,2,25,"43:45","7.6.2011",4));
+		lista.add(new podatkiZaBazo(370,13,2,18,"00:55","7.6.2011",34));
+		lista.add(new podatkiZaBazo(650,7,2,10,"02:45","9.6.2011",9));
 
 
 		addDB(lista.get(0));

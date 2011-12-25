@@ -1,17 +1,15 @@
 package edu.klemen.rekreAsist.android;
 
-import java.util.ArrayList;
 import java.util.List;
-
-
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class PodatkiArrayAdapter extends ArrayAdapter<podatkiZaBazo>{
@@ -42,6 +40,7 @@ public class PodatkiArrayAdapter extends ArrayAdapter<podatkiZaBazo>{
 			holder.pot=(TextView) convertView.findViewById(R.id.tv_ListPot);
 			holder.hitrost=(TextView) convertView.findViewById(R.id.tv_ListHitrost);
 			holder.povprecnaHitrost=(TextView) convertView.findViewById(R.id.tv_ListPovprecnaHitrost);
+			holder.kalorije=(TextView) convertView.findViewById(R.id.tv_ListKalorije);
 			convertView.setTag(holder);
 		} else {
 			// Get the ViewHolder back to get fast access to the TextView
@@ -57,6 +56,7 @@ public class PodatkiArrayAdapter extends ArrayAdapter<podatkiZaBazo>{
 		holder.povprecnaHitrost.setText("~hitrost:"+tmp.povPrecnaHitrost+"km/h");
 		holder.hitrost.setText("max hitrost:"+tmp.maxSpeed+"km/h");
 		holder.pot.setText("pot:"+tmp.pot+"m");
+		holder.kalorije.setText("Kcal:"+tmp.kalorije);
 		//holder.icon.setImageBitmap((position & 1) == 1 ? mIcon1 : mIcon2);
 		i++;
 		return convertView;
@@ -70,7 +70,9 @@ public class PodatkiArrayAdapter extends ArrayAdapter<podatkiZaBazo>{
 		TextView povprecnaHitrost;
 		TextView cas;
 		TextView steviloKrogov;
+		TextView kalorije;
 	}
+
 
 
 }
