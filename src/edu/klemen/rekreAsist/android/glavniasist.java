@@ -142,13 +142,15 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		criteria.setPowerRequirement(Criteria.POWER_LOW);
 		String provider = locationManager.getBestProvider(criteria, true);
 
-		Location location = locationManager.getLastKnownLocation(provider);
-		my_updateWithNewLocation(location);
+//		Location location = locationManager.getLastKnownLocation(provider);
+//		my_updateWithNewLocation(location);
 		
 		locationManager.requestLocationUpdates(provider, 35, 10, locationListener);
 		
 		//-----------------------------------------maps/-
-		}catch(Exception f){}
+		}catch(Exception f){
+			Toast.makeText(this, "Prosim preverite ali imate vklopljen internet in GPS", Toast.LENGTH_LONG).show();
+		}
 		
 	}
 	

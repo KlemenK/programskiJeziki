@@ -1,5 +1,6 @@
 package edu.klemen.rekreAsist.android;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,17 +41,6 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 	MapView myMapView;
 	
 	
-	class MapOverlay extends Overlay
-	{
-		@Override
-		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-			// TODO Auto-generated method stub
-			super.draw(canvas, mapView, shadow);
-			
-		}
-	}
-	
-	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.izbirapoti);
@@ -88,9 +78,9 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		String context = Context.LOCATION_SERVICE;
 		locationManager = (LocationManager)getSystemService(context);
 		// Add the MyPositionOverlay
-//		positionOverlay1 = new MyPositionOverlay();
-//		List<Overlay> overlays = myMapView.getOverlays();
-//		overlays.add(positionOverlay1);
+		positionOverlay1 = new MyPositionOverlay();
+		List<Overlay> overlays = myMapView.getOverlays();
+		overlays.add(positionOverlay1);
 
 		Criteria criteria1 = new Criteria();
 		criteria1.setAccuracy(Criteria.ACCURACY_FINE);
@@ -100,8 +90,9 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		criteria1.setPowerRequirement(Criteria.POWER_LOW);
 		String provider1 = locationManager.getBestProvider(criteria1, true);
 
-		Location location1 = locationManager.getLastKnownLocation(provider1);
-		my_updateWithNewLocation(location1);
+//		Location location1 = locationManager.getLastKnownLocation(provider1);
+//		
+//		my_updateWithNewLocation(location1);
 		
 		locationManager.requestLocationUpdates(provider1, 35, 10, locationListener);
 		}catch (Exception e) {
@@ -109,12 +100,8 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		}
 		//-----------------------------------------maps/-
 		
-		
-		
 	}
 
-	
-	
 	private final LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
 			my_updateWithNewLocation(location);
@@ -130,7 +117,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 	};
 
 	private void my_updateWithNewLocation(Location location) {
-		//String latLongString;
+		String latLongString;
 		Double dolzina=0.0;
 		//TextView myLocationText;
 		//myLocationText = (TextView)findViewById(R.id.myLocationText);
@@ -146,9 +133,9 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 			mapController1.animateTo(point);
 			
 
-			//double lat = location.getLatitude();
-		//	double lng = location.getLongitude();
-			//latLongString = "Lat:" + lat + "\nLong:" + lng;
+			double lat = location.getLatitude();
+			double lng = location.getLongitude();
+			latLongString = "Lat:" + lat + "\nLong:" + lng;
 			locations1.add(location);
 			if((locations1.size()>=2)){
 	    		
@@ -188,7 +175,6 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 		switch (requestCode) {
-
         case GLAVNO_OKNO_ID:
         	if(resultCode==RESULT_CANCELED) this.finish();
         	break;        	
@@ -204,7 +190,7 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
 		
-		Toast.makeText(getBaseContext(), "juhu dela", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getBaseContext(), "juhu dela", Toast.LENGTH_SHORT).show();
 
 		if (event.getAction() == 1) {                
             GeoPoint p = myMapView.getProjection().fromPixels(
@@ -218,6 +204,23 @@ public class izbiraPoti extends MapActivity implements android.view.View.OnClick
 		
 		return false;
 
+	}
+	public ArrayList<Location> getRoute(Location lokacija){
+		
+//		double fromLat = Settings.locationLat, fromLon = Settings.locationLon, toLat = latitude, toLon = longitude;
+//    	if (lokacija != null) {
+//    		fromLat = location.getLatitude();
+//    		fromLon = location.getLongitude();
+//    		
+//    		Toast.makeText(this, "Koordinate " + fromLat + ", " + fromLon, Toast.LENGTH_LONG).show();
+//    	}
+//        String url = RoadProvider.getUrl(fromLat, fromLon, toLat, toLon);
+//        InputStream is = getConnection(url);
+//        mRoad = RoadProvider.getRoute(is);
+//        mHandler.sendEmptyMessage(0);
+		
+		
+		return null;
 	}
 
 }

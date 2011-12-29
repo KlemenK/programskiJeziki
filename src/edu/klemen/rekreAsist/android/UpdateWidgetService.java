@@ -21,7 +21,7 @@ public class UpdateWidgetService extends Service{
 		
 		if(app.getPodatkiKoledarWidget()==null || app.getPodatkiKoledarWidget().size()==0) app.setPodatkiKoledarWidget(rss.readNews());
 		
-		
+		try{
 		
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this.getApplicationContext());
 
@@ -35,12 +35,15 @@ public class UpdateWidgetService extends Service{
 				remoteViews.setTextViewText(R.id.textWidgetKraj, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).kraj);
 				remoteViews.setTextViewText(R.id.textWidgetNaziv, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).naziv);
 				if(app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).opis.startsWith("opis prireditve:")==false) remoteViews.setTextViewText(R.id.textWidgetOpis, "Opis ni na voljo");
-				else remoteViews.setTextViewText(R.id.textWidgetOpis, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).opis);
+				else remoteViews.setTextViewText(R.id.textWidgetOpis, app.getPodatkiKoledarWidget().get(app.getStevec()%app.getPodatkiKoledarWidget().size()).opis.replace("opis prireditve: ", "Opis prireditve:\n"));
 				
 				app.setStevec(app.getStevec()+1);
 				appWidgetManager.updateAppWidget(widgetId, remoteViews);
 			}
 			stopSelf();
+		}
+		}catch(Exception ex){
+			Toast.makeText(this, "Prosim preverite ali imate povezavo z internetom", Toast.LENGTH_LONG).show();
 		}
 		super.onStart(intent, startId);
 	}

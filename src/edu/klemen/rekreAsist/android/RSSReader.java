@@ -20,6 +20,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import android.util.Log;
+import android.widget.Toast;
 
 public class RSSReader {
 
@@ -54,10 +55,7 @@ public class RSSReader {
 			Log.e(""+rezultat.length(), rezultat.substring(0, 200));
 			
 			
-		}// try
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		
 		// podatki ;; objekti ;::;
 		PodatkiSportniKoledar vmesni;
 		String[] objekti;
@@ -89,6 +87,7 @@ public class RSSReader {
 				else vmesni.kontakt=razb[j].replace("kontaktna oseba-e:", "");//pridobim kontakt iz kontaktov
 			}
 			news.add(vmesni);
+			
 //			Log.d("datum: "+vmesni.datum,"");
 //			Log.d("kraj: "+vmesni.kraj,"");
 //			Log.d("sport: "+vmesni.sport,"");
@@ -102,7 +101,11 @@ public class RSSReader {
 //			Log.d("----------------------------","");
 			
 		}
+		}// try
+		catch (Exception ex) {
+		return null;
 		
+	}
 		
 		return news;
 

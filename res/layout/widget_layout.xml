@@ -7,73 +7,101 @@
     android:background="@drawable/widgetodzadje"
     android:gravity="bottom|center"
     android:orientation="vertical" >
-    android:onClick="Klik"
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom|center" >
-
-        <TextView
-            android:id="@+id/textWidgetDatum"
-            style="@android:style/TextAppearance.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="4dip"
-            android:layout_weight="1"
-            android:drawableRight="@drawable/crtanavpicnowidget"
-            android:gravity="top|bottom|center"
-            android:minLines="3"
-            android:text="Static Text" />
-
-        <TextView
-            android:id="@+id/textWidgetKraj"
-            style="@android:style/TextAppearance.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center|left"
-            android:layout_margin="4dip"
-            android:layout_weight="1"
-            android:gravity="top|bottom|center"
-            android:minLines="3"
-            android:text="Static Text" />
+        android:layout_height="15dp"
+        android:orientation="vertical" >
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.78"
-        android:gravity="center"
+        android:gravity="top"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textWidgetNaziv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/crtavodoravno"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/textWidgetOpis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:drawableTop="@drawable/crtavodoravno"
-            android:text="TextView" />
-
-        <Button
-            android:id="@+id/btnWidget"
+        <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="19dp"
-            android:layout_weight="0.12"
-            android:background="@drawable/widgetbtn"
-            android:text="Osvezi/naseldnji" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.78"
+            android:gravity="bottom|center" >
+
+            <TextView
+                android:id="@+id/textWidgetDatum"
+                style="@android:style/TextAppearance.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_margin="4dip"
+                android:layout_weight="1"
+                android:drawableRight="@drawable/crtanavpicnowidget"
+                android:gravity="top|bottom|center"
+                android:minLines="3"
+                android:text="@string/date" />
+
+            <TextView
+                android:id="@+id/textWidgetKraj"
+                style="@android:style/TextAppearance.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center|left"
+                android:layout_margin="4dip"
+                android:layout_weight="1"
+                android:gravity="top|bottom|center"
+                android:minLines="3"
+                android:text="@string/location" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.78"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textWidgetNaziv"
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/crtavodoravno"
+                android:text="@string/naziv"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/textWidgetOpis"
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:drawableTop="@drawable/crtavodoravno"
+                android:text="@string/opis" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="bottom"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/btnWidget"
+                    android:layout_width="match_parent"
+                    android:layout_height="19dp"
+                    android:layout_weight="0.14"
+                    android:background="@drawable/widgetbtn"
+                    android:text="Osvezi/naseldnji" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
+
+    android:onClick="Klik"
+
+    
 
 </LinearLayout>
