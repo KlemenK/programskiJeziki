@@ -131,6 +131,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		locationManager = (LocationManager)getSystemService(context);
 		// Add the MyPositionOverlay
 		positionOverlay = new MyPositionOverlay();
+		if(podatki.FLAG_IZBRANA_POT==true) positionOverlay.setIzbranaPot(podatki.getIzbranaPot());//dodam izbrano pot
 		List<Overlay> overlays = myMapView1.getOverlays();
 		overlays.add(positionOverlay);
 
@@ -397,16 +398,11 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		int znacka=0;
 		String tempC;
 		//String relVlaznost,povpTemp,link;
-		
-		
-		
 		try
 		{
 			stran= executeHttpGet();
 		}
 		catch (Exception e) {}
-		
-		
 		znacka = stran.indexOf("<t>");
 		tempC = stran.substring(znacka+3, stran.indexOf("</t>"));
 		return tempC;
@@ -441,6 +437,13 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		//	Toast.makeText(asinhroniTask.this, "Vsota: "+tretji, Toast.LENGTH_LONG).show();
 			
 		}
+	}
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		podatki.FLAG_IZBRANA_POT=false;
+		podatki.izbranaPotLokacije.clear();
+		super.onStop();
 	}
 
 }

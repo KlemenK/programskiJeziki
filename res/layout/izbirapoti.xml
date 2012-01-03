@@ -3,12 +3,50 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:id="@+id/layout_izbirapoti" android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_Premik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Premikaj" />
   
     <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="match_parent">
     	<com.google.android.maps.MapView android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:apiKey="0hbSGfgHC1Ztb53v544NWQeDiMvSjSEA1_P2BhA" android:id="@+id/mapviewNova" android:layout_height="650px"></com.google.android.maps.MapView>
     </LinearLayout>
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="match_parent" android:orientation="horizontal" android:layout_width="match_parent">
-        <Button android:text="@string/zazeniPot" android:gravity="center" android:id="@+id/btn_zazeniPot" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"></Button>
-        <Button android:text="@string/nazaj" android:gravity="center" android:id="@+id/btnNazaj" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"></Button>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_zazeniPot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center|center_horizontal|center_vertical|fill|left|right|top"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="zazeni" >
+        </Button>
+
+        <Button
+            android:id="@+id/btn_Premik1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Premikaj" />
+
+        <Button
+            android:id="@+id/btnNazaj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center|center_horizontal|center_vertical|fill|left|right|top"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="nazaj" >
+        </Button>
     </LinearLayout>
+
 </LinearLayout>

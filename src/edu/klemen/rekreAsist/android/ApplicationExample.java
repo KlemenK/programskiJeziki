@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.android.maps.GeoPoint;
+
 import android.app.Application;
 import android.database.Cursor;
 import android.util.Log;
@@ -30,12 +32,6 @@ public class ApplicationExample extends Application {
 		return podatkiKoledarWidget;
 	}
 	
-//	public List<PodatkiSportniKoledar> getNews() {
-//		return news;
-//	}
-//	public void setNews(List<PodatkiSportniKoledar> list) {
-//		this.news = list;
-//	}
 	public int getStevec() {
 		return stevec;
 	}
@@ -54,7 +50,30 @@ public class ApplicationExample extends Application {
 	DBAdapterBazaPoti dbPoti;
 	public ArrayList<PodatkiZaPoti> listaPoti;
 //konec baze
-
+/*
+ * Izbira poti
+ * */
+	ArrayList<GeoPoint> izbranaPotLokacije;
+	public boolean FLAG_IZBRANA_POT=false;
+	public void setIzbranoPot(ArrayList<GeoPoint> izbrana){
+		this.izbranaPotLokacije=izbrana;
+		FLAG_IZBRANA_POT=true;
+	}
+	public ArrayList<GeoPoint> getIzbranaPot(){
+		return this.izbranaPotLokacije;
+	}
+	public boolean resetIzbranaPot(){
+		if(!(this.izbranaPotLokacije.isEmpty())){
+			this.izbranaPotLokacije.clear();
+			FLAG_IZBRANA_POT=false;
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	 * konec Izbira poti
+	 * */
 	public void onCreate() {
         super.onCreate(); //ne pozabi
         db = new DBAdapterBaza(this);

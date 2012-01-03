@@ -20,7 +20,7 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
 public class MyPositionOverlay extends Overlay {
-
+  
   private final int mRadius = 8;
   public Bitmap slika=BitmapFactory.decodeFile("res/drawable/ludek.jpg");
 
@@ -31,11 +31,11 @@ public class MyPositionOverlay extends Overlay {
   Location location;
   int oznaka;
   ArrayList<Location> locations;
-  
  
   public Location getLocation() {
     return location;
   }
+ 
   public void setLocation(Location location,int oznaka) {
     this.location = location;
     this.oznaka=oznaka;
@@ -45,7 +45,12 @@ public class MyPositionOverlay extends Overlay {
 	    this.location = location;
 	    this.locations.add(location);
 	  }
-	
+  ArrayList<GeoPoint> izbranaPot;
+  boolean FLAG_POTI=false;
+  public void setIzbranaPot(ArrayList<GeoPoint> pot) {//-------------------------IzbranaPot-------------------
+	   izbranaPot=pot;
+	   FLAG_POTI=true;
+	  }
   @Override
   public boolean onTap(GeoPoint point, MapView mapView) {
     return false;
@@ -54,8 +59,23 @@ public class MyPositionOverlay extends Overlay {
   @Override
   public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 	  
-	  Projection projection = mapView.getProjection();
+	Projection projection = mapView.getProjection();
     try{
+    	if(FLAG_POTI==true){
+    		for(int i=0;i<izbranaPot.size()-1;i++){
+    			Path path = new Path();
+    			Point p1=new Point();
+    			Point p2=new Point();
+    	        projection.toPixels(izbranaPot.get(i), p1);
+    	        projection.toPixels(izbranaPot.get(i+1), p2);
+    	        path.moveTo(p2.x, p2.y);
+    	        path.lineTo(p1.x,p1.y);
+    	        Paint crta=new Paint();
+    	        crta.setARGB(250, 0, 255, 0);
+    	        crta.setStrokeWidth(8);
+    	        canvas.drawLine(p1.x, p1.y, p2.x, p2.y, crta);
+    		}
+    	}
     	if((locations.size()>=2)&&(shadow==false)&&(location!=null)){
     		
     		for(int i=0;i<locations.size()-1;i++){
@@ -74,20 +94,14 @@ public class MyPositionOverlay extends Overlay {
     	        projection.toPixels(gp2, p2);
     	        path.moveTo(p2.x, p2.y);
     	        path.lineTo(p1.x,p1.y);
-    	        Paint crta=new Paint();
+    	        Paint crta=new Paint();    	        
     	        
-    	        
-    	        
-    	        if(oznaka==0) crta.setARGB(250, 0, 0, 0);
-    	        if(oznaka==1) crta.setARGB(250, 0, 255, 0);
-    	        if(oznaka==2) crta.setARGB(250, 255, 0, 0);
-    	        
-    	        
+    	       /* if(oznaka==0)*/ crta.setARGB(250, 0, 0, 0);
+//    	        if(oznaka==1) crta.setARGB(250, 0, 255, 0);
+//    	        if(oznaka==2) crta.setARGB(250, 255, 0, 0);
     	        crta.setStrokeWidth(10);
     	       // crta.setStyle(Style.FILL_AND_STROKE);
     	        canvas.drawLine(p1.x, p1.y, p2.x, p2.y, crta);
-    	        //canvas.drawPath(path,);
-    	        
     	        
     		}
     	}

@@ -100,8 +100,6 @@
 
     </LinearLayout>
 
-    android:onClick="Klik"
-
     
 
 </LinearLayout>
