@@ -43,7 +43,7 @@ public class UpdateWidgetService extends Service{
 			stopSelf();
 		}
 		}catch(Exception ex){
-			Toast.makeText(this, "Prosim preverite ali imate povezavo z internetom", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "Prosim preverite ali imate povezavo z internetom", Toast.LENGTH_LONG).show();
 		}
 		super.onStart(intent, startId);
 	}

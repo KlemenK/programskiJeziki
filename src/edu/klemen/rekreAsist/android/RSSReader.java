@@ -80,6 +80,7 @@ public class RSSReader {
 //			String test="pe;e; ; ";
 //			razb=test.split(";");
 //			Log.d(""+razb.length, "test");
+			vmesni.kontakt=podatkiObjektov[8];
 			razb=podatkiObjektov[8].split("|");
 			for(int j=0;j<razb.length;j++){
 				if(razb[j].contains("@")){ vmesni.email=razb[j];//pridobim email iz kontaktov če še ni bil izluščen	
