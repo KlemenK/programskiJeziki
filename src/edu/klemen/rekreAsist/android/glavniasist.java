@@ -441,8 +441,11 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
-		podatki.FLAG_IZBRANA_POT=false;
-		podatki.izbranaPotLokacije.clear();
+	
+		if(podatki.FLAG_IZBRANA_POT==true){
+			podatki.izbranaPotLokacije.clear();
+			podatki.FLAG_IZBRANA_POT=false;
+		}
 		super.onStop();
 	}
 
