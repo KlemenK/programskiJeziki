@@ -1,16 +1,6 @@
 package edu.klemen.rekreAsist.android;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author vijay
-
- *
- */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +19,7 @@ public class RSSReader {
 	private static final String SOAP_ACTION="http://sportniKoledar.klemen.edu/preberiPodatke";
 	private static final String METHOD_NAME="preberiPodatke";
 	private static final String NAMESPACE="http://sportniKoledar.klemen.edu";
-	private static final String URL="http://192.168.1.6:8080/SportniKoledar/services/PreberiPodatke?wsdl";
+	private static final String URL="http://192.168.1.101:8080/SportniKoledar/services/PreberiPodatke?wsdl";
 	private String rezultat="";
 //	public static RSSReader getInstance() {
 //		if (instance == null) {
@@ -81,12 +71,12 @@ public class RSSReader {
 //			razb=test.split(";");
 //			Log.d(""+razb.length, "test");
 			vmesni.kontakt=podatkiObjektov[8];
-			razb=podatkiObjektov[8].split("|");
-			for(int j=0;j<razb.length;j++){
-				if(razb[j].contains("@")){ vmesni.email=razb[j];//pridobim email iz kontaktov če še ni bil izluščen	
-				}else if(razb[j].contains("0")) vmesni.telefonska=razb[j];//pridobim telefonsko iz kontaktov
-				else vmesni.kontakt=razb[j].replace("kontaktna oseba-e:", "");//pridobim kontakt iz kontaktov
-			}
+//			razb=podatkiObjektov[8].split("|");
+//			for(int j=0;j<razb.length;j++){
+//				if(razb[j].contains("@")){ vmesni.email=razb[j];//pridobim email iz kontaktov če še ni bil izluščen	
+//				}else if(razb[j].contains("0")) vmesni.telefonska=razb[j];//pridobim telefonsko iz kontaktov
+//				else vmesni.kontakt=razb[j].replace("kontaktna oseba-e:", "");//pridobim kontakt iz kontaktov
+//			}
 			news.add(vmesni);
 			
 //			Log.d("datum: "+vmesni.datum,"");
@@ -112,33 +102,4 @@ public class RSSReader {
 
 	}
 
-//	private String getCharacterDataFromElement(Element e) {
-//		try {
-//			Node child = e.getFirstChild();
-//			if (child instanceof CharacterData) {
-//				CharacterData cd = (CharacterData) child;
-//				return cd.getData();
-//			}
-//		} catch (Exception ex) {
-//
-//		}
-//		return "";
-//	} // private String getCharacterDataFromElement
-
-//	protected float getFloat(String value) {
-//		if (value != null && !value.equals("")) {
-//			return Float.parseFloat(value);
-//		}
-//		return 0;
-//	}
-//
-//	protected String getElementValue(Element parent, String label) {
-//		return getCharacterDataFromElement((Element) parent
-//				.getElementsByTagName(label).item(0));
-//	}
-
-//	public static void main(String[] args) {
-//		RSSReader reader = RSSReader.getInstance();
-//		reader.readNews();
-//	}
 }

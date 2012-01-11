@@ -52,6 +52,7 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 	GeoPoint prvaLokacija;
 	ArrayList<GeoPoint> izbranaPotLokacije;
 	ApplicationExample podatki;
+	private boolean FLAG_PRVIC=true;
 	
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -112,7 +113,13 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 
 	private final LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
+			if(FLAG_PRVIC==true){
+				Double geoLat = location.getLatitude()*1E6;
+				Double geoLng = location.getLongitude()*1E6;
+				prvaLokacija = new GeoPoint(geoLat.intValue(),geoLng.intValue());
+			}
 			my_updateWithNewLocation(location);
+			FLAG_PRVIC=false;
 		}
 
 		public void onProviderDisabled(String provider){
@@ -128,20 +135,23 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 
 		if (location != null) {
 
-			Double geoLat = location.getLatitude()*1E6;
-			Double geoLng = location.getLongitude()*1E6;
-			GeoPoint point = new GeoPoint(geoLat.intValue(),geoLng.intValue());
+			
 
-			mapController1.animateTo(point);
-			locations1.add(location);
-			if(lokacijaFlag==false){
-				Double lat= location.getLatitude()*1E6;
-				Double lng= location.getLongitude()*1E6;
-				prvaLokacija= new GeoPoint(lat.intValue(),lng.intValue());
-				lokacijaFlag=true;
+			if(FLAG_PRVIC==true){
+				Double geoLat = location.getLatitude()*1E6;
+				Double geoLng = location.getLongitude()*1E6;
+				GeoPoint point = new GeoPoint(geoLat.intValue(),geoLng.intValue());
+				mapController1.animateTo(point);
 			}
-	    	GeoPoint srcGeoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),(int) (location.getLongitude() * 1E6)); 
-	    	myMapView.getController().animateTo(srcGeoPoint);
+//			locations1.add(location);
+//			if(lokacijaFlag==false){
+//				Double lat= location.getLatitude()*1E6;
+//				Double lng= location.getLongitude()*1E6;
+//				prvaLokacija= new GeoPoint(lat.intValue(),lng.intValue());
+//				lokacijaFlag=true;
+//			}
+//	    	GeoPoint srcGeoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),(int) (location.getLongitude() * 1E6)); 
+//	    	myMapView.getController().animateTo(srcGeoPoint);
 		}
 
 	}
@@ -169,15 +179,18 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 				premik.setText("Premikaj");
 				ROUTE_FLAG=0;
 				ROUTE_FLAG1=0;
+				
 			}else if(ROUTE_FLAG==0){
 				ROUTE_FLAG=-1;
 				premik.setTextSize(10);
 				premik.setText("Premik stop");
+				premik.setBackgroundResource(R.drawable.premikrdecaikona);
 			}
 			else{
 				ROUTE_FLAG=0;
 				premik.setTextSize(14);
 				premik.setText("Premikaj");
+				premik.setBackgroundResource(R.drawable.premikicon);
 			}
 			break;
 		default:

@@ -27,7 +27,7 @@ public class UpdateWidgetService extends Service{
 
 		int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
 		if (appWidgetIds.length > 0) {
-			Log.d("test54", "sad");
+		//	Log.d("test54", "sad");
 			for (int widgetId : appWidgetIds) {
 				RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_layout);
 				

@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -23,6 +24,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -63,7 +65,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	public float maxSpeed=0;
 	LocationManager locationManager;
 	public Calendar koledar;
-	
+	private boolean FLAG_PRVIC=true, FLAG_START_STOP=true;
 	public int oznacbaPoti=0;
 	
 	
@@ -157,7 +159,19 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	
 	private final LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
+			if(FLAG_PRVIC==true){//nastavim prvo točko
+				locations.clear();
+				podatki.listaPoti.clear();
+				Double geoLat = location.getLatitude()*1E6;
+				Double geoLng = location.getLongitude()*1E6;
+				GeoPoint point = new GeoPoint(geoLat.intValue(),geoLng.intValue());
+				mapController.animateTo(point);
+				locations.add(location);
+				podatki.listaPoti.add(new PodatkiZaPoti(location.getLatitude(), location.getLongitude()));
+				FLAG_START_STOP=false;
+			}
 			my_updateWithNewLocation(location);
+			FLAG_PRVIC=false;
 		}
 
 		public void onProviderDisabled(String provider){
@@ -176,8 +190,6 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		//myLocationText = (TextView)findViewById(R.id.myLocationText);
 		
 		if (location != null) {
-			positionOverlay.setLocation(location,oznacbaPoti);
-
 			Double geoLat = location.getLatitude()*1E6;
 			Double geoLng = location.getLongitude()*1E6;
 			
@@ -187,37 +199,46 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					geoLng.intValue());
 
 			mapController.animateTo(point);
-
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
-			podatki.listaPoti.add(new PodatkiZaPoti(lat, lng));
-			//latLongString = "Lat:" + lat + "\nLong:" + lng;
-			locations.add(location);
-			double sp=location.getSpeed()*3.6;//pretvorba iz m/s v km/h
-			DecimalFormat te=new DecimalFormat("#.##");
-			sp=Double.valueOf(te.format(sp));
-			hitrost.setText("Hitrost: "+sp+"km/h "+oznacbaPoti);
-			if((sp>=0)&&(sp<10)) oznacbaPoti=0;
-			if((sp>=10)&&(sp<25)) oznacbaPoti=1;
-			if((sp>=25)) oznacbaPoti=2;
-			//-------------------------------------------------------------------||||||||||||||||||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-			speed.add((float)sp);
-			if(maxHitrost((float)sp)==true){
-				maxSpeed=(float)sp;
-				maxHitrost.setText("Max hitrost: "+maxSpeed+"km/h");
-			}
-			if((locations.size()>=2)){
-	    		
-	    		for(int i=0;i<locations.size()-1;i++){
-	    			Location loc1=locations.get(i);
-	    			Location loc2=locations.get(i+1);
-	    			dolzina+=loc1.distanceTo(loc2);   
-	    		//	DecimalFormat test=new DecimalFormat("#.##");
-	    		//	dolzina=float.valueOf(test.format(dolzina));
-	    			//loc1.gett
-	    		}
-	    		pot.setText("Pot: "+dolzina+"m");
-	    		
+			
+			if(FLAG_PRVIC==true) positionOverlay.setLocation(location,oznacbaPoti);
+			
+			if(FLAG_START_STOP==true){//zagnano ali ne
+				
+				//latLongString = "Lat:" + lat + "\nLong:" + lng;
+			
+				if(FLAG_PRVIC==false){
+					double lat = location.getLatitude();
+					double lng = location.getLongitude();
+					podatki.listaPoti.add(new PodatkiZaPoti(lat, lng));
+					locations.add(location); //prvič preskočimo
+				}
+				positionOverlay.setLocation(location,oznacbaPoti);
+				Log.d("Prva tocka", "lat:"+locations.get(0).getLatitude()+" lng:"+locations.get(0).getLongitude());
+				double sp=location.getSpeed()*3.6;//pretvorba iz m/s v km/h
+				DecimalFormat te=new DecimalFormat("#.##");
+				sp=Double.valueOf(te.format(sp));
+				hitrost.setText("Hitrost: "+sp+"km/h "+oznacbaPoti);
+				if((sp>=0)&&(sp<10)) oznacbaPoti=0;
+				if((sp>=10)&&(sp<25)) oznacbaPoti=1;
+				if((sp>=25)) oznacbaPoti=2;
+				//-------------------------------------------------------------------||||||||||||||||||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+				speed.add((float)sp);
+				if(maxHitrost((float)sp)==true){
+					maxSpeed=(float)sp;
+					maxHitrost.setText("Max hitrost: "+maxSpeed+"km/h");
+				}
+				if((locations.size()>=2)){
+		    		
+		    		for(int i=0;i<locations.size()-1;i++){
+		    			Location loc1=locations.get(i);
+		    			Location loc2=locations.get(i+1);
+		    			dolzina+=loc1.distanceTo(loc2);   
+		    		//	DecimalFormat test=new DecimalFormat("#.##");
+		    		//	dolzina=float.valueOf(test.format(dolzina));
+		    			//loc1.gett
+		    		}
+		    		pot.setText("Pot: "+dolzina+"m");	
+				}
 			}
 			//myLocationText.setText("Trenutni polo�aj je:" + latLongString);
 		}
@@ -234,14 +255,17 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		
 		switch (v.getId()) {
 		case R.id.btnStartStop:
-			Toast test;
+		//	Toast test;
 			if(pause==false){
 				if(flag==false){
+					
+					positionOverlay.resetLokacije();
 					//start=SystemClock.elapsedRealtime();
 					stoparca.setBase(SystemClock.elapsedRealtime()-end);
 					stoparca.start();
 					stoparcaFlag=true;
-					
+					FLAG_START_STOP=true;
+					FLAG_PRVIC=true;//pridobimo startno tocko
 					pause=true;
 					tflag=false;
 				}else{
@@ -249,14 +273,18 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 					start=SystemClock.elapsedRealtime();
 					stoparca.setBase(SystemClock.elapsedRealtime());//prvi�
 					stoparca.start();
+					FLAG_START_STOP=true;
 					stoparcaFlag=true;
 					pause=true;
 					flag=false;
 					tflag=false;
 				}
+				startstop.setBackgroundResource(R.drawable.buttonstop);
 			}
 			else{// zamejaj koledar
+				startstop.setBackgroundResource(R.drawable.buttonplay);
 				if(tflag==false){
+					FLAG_START_STOP=false;//preneham gledat lokacijo
 					Calendar kol;
 					kol=Calendar.getInstance();
 
@@ -442,7 +470,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	protected void onStop() {
 		// TODO Auto-generated method stub
 	
-		if(podatki.FLAG_IZBRANA_POT==true){
+		if(!podatki.izbranaPotLokacije.isEmpty()){
 			podatki.izbranaPotLokacije.clear();
 			podatki.FLAG_IZBRANA_POT=false;
 		}

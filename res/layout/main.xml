@@ -7,39 +7,36 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_weight="1.62" >
 
         <ImageButton
             android:id="@+id/btnSeznam"
             android:layout_width="match_parent"
-            android:layout_height="120dip"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/seznamikona" />
+            android:background="@drawable/seznamknjiga" />
 
         <ImageButton
             android:id="@+id/btnZnova"
-            android:layout_width="match_parent"
-            android:layout_height="120dip"
-            android:layout_weight="1"
-            android:background="@drawable/ludek" />
-
+            android:layout_width="158dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/buttonplay" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="346dp"
         android:gravity="center"
         android:orientation="vertical" >
 
         <ImageButton
             android:id="@+id/btnIzberiPot"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
+            android:layout_width="128dp"
+            android:layout_height="127dp"
             android:layout_gravity="center|top"
-            android:layout_weight="0.65"
-            android:background="@drawable/potikona"
-            />
+            android:background="@drawable/izbirastart" />
 
         <LinearLayout
             android:id="@+id/linearLayout3"
@@ -54,8 +51,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_weight="0.65"
-            android:background="@drawable/izhodikona" />
-
+            android:background="@drawable/buttonclose" />
     </LinearLayout>
 
 </LinearLayout>

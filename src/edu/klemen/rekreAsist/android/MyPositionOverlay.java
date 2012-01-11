@@ -30,7 +30,7 @@ public class MyPositionOverlay extends Overlay {
   }
   Location location;
   int oznaka;
-  ArrayList<Location> locations;
+  ArrayList<Location> locations= new ArrayList<Location>();
  
   public Location getLocation() {
     return location;
@@ -45,7 +45,11 @@ public class MyPositionOverlay extends Overlay {
 	    this.location = location;
 	    this.locations.add(location);
 	  }
-  ArrayList<GeoPoint> izbranaPot;
+  public void resetLokacije(){
+	  if(!this.locations.isEmpty())this.locations.clear();
+	  if(!this.izbranaPot.isEmpty())this.izbranaPot.clear();
+  }
+  ArrayList<GeoPoint> izbranaPot= new ArrayList<GeoPoint>();
   boolean FLAG_POTI=false;
   public void setIzbranaPot(ArrayList<GeoPoint> pot) {//-------------------------IzbranaPot-------------------
 	   izbranaPot=pot;
@@ -118,7 +122,6 @@ public class MyPositionOverlay extends Overlay {
       // Convert the location to screen pixels     
       Point point = new Point();
       projection.toPixels(geoPoint, point);
-
       
      
       RectF oval = new RectF(point.x - mRadius, point.y - mRadius, 

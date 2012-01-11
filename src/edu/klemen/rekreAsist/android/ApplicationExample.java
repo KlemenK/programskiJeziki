@@ -53,7 +53,7 @@ public class ApplicationExample extends Application {
 /*
  * Izbira poti
  * */
-	ArrayList<GeoPoint> izbranaPotLokacije;
+	ArrayList<GeoPoint> izbranaPotLokacije= new ArrayList<GeoPoint>();
 	public boolean FLAG_IZBRANA_POT=false;
 	public void setIzbranoPot(ArrayList<GeoPoint> izbrana){
 		this.izbranaPotLokacije=izbrana;

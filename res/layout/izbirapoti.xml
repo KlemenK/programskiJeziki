@@ -3,13 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:id="@+id/layout_izbirapoti" android:orientation="vertical">
-
-    <Button
-        android:id="@+id/btn_Premik"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Premikaj" />
   
     <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="match_parent">
     	<com.google.android.maps.MapView android:layout_width="fill_parent" android:layout_weight="1" android:clickable="true" android:apiKey="0hbSGfgHC1Ztb53v544NWQeDiMvSjSEA1_P2BhA" android:id="@+id/mapviewNova" android:layout_height="650px"></com.google.android.maps.MapView>
@@ -18,35 +11,58 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/btn_zazeniPot"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center|center_horizontal|center_vertical|fill|left|right|top"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="zazeni" >
-        </Button>
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/btn_Premik1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Premikaj" />
+            <Button
+                android:id="@+id/btn_zazeniPot"
+                android:layout_width="46dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/buttonplay"
+                android:text="zazeni" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnNazaj"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center|center_horizontal|center_vertical|fill|left|right|top"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="nazaj" >
-        </Button>
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btn_Premik1"
+                android:layout_width="46dp"
+                android:layout_height="37dp"
+                android:background="@drawable/premikicon"
+                android:text="Premikaj" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnNazaj"
+                android:layout_width="46dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/buttonnazaj"
+                android:text="nazaj" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
