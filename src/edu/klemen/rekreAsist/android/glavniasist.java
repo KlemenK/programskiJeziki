@@ -350,7 +350,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	private float priblkalorije(float povhitr, String cas){
 		int min=0,h=0;
 		String[] ca;
-		Toast.makeText(this, "kalorije "+cas, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "kalorije "+cas, Toast.LENGTH_SHORT).show();
 		ca=cas.split(":");
 		if(ca.length==3){
 			h= Integer.parseInt(ca[0]);
@@ -366,7 +366,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			cal=cal+rang(povhitr);
 		}
 		cal=cal+((min*rang(povhitr))/60);
-		Toast.makeText(this, "kalorije "+cal, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "kalorije "+cal, Toast.LENGTH_SHORT).show();
 
 		return cal;
 	}

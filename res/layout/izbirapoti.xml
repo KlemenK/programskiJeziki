@@ -27,8 +27,7 @@
                 android:id="@+id/btn_zazeniPot"
                 android:layout_width="46dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/buttonplay"
-                android:text="zazeni" />
+                android:background="@drawable/buttonplay"/>
         </LinearLayout>
 
         <LinearLayout
@@ -43,8 +42,7 @@
                 android:id="@+id/btn_Premik1"
                 android:layout_width="46dp"
                 android:layout_height="37dp"
-                android:background="@drawable/premikicon"
-                android:text="Premikaj" />
+                android:background="@drawable/premikicon"/>
 
         </LinearLayout>
 
@@ -60,8 +58,7 @@
                 android:id="@+id/btnNazaj"
                 android:layout_width="46dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/buttonnazaj"
-                android:text="nazaj" />
+                android:background="@drawable/buttonnazaj"/>
         </LinearLayout>
     </LinearLayout>
 

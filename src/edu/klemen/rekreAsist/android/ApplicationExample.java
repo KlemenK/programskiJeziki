@@ -83,7 +83,8 @@ public class ApplicationExample extends Application {
         lista= new ArrayList<podatkiZaBazo>();
         listaPoti= new ArrayList<PodatkiZaPoti>();
  
-        //initPoti();
+//        init();
+//        initPoti(); //testni podatki
         
         fillFromDB();
         podatkiList = new PodatkiArrayAdapter(this, R.layout.seznam_podatkov,lista);//podatkiList-seznam, R-layout ki bo izpiso, s keriga seznama
@@ -95,10 +96,10 @@ public class ApplicationExample extends Application {
 	public void init()
 	{
 		//testni podatki
-		lista.add(new podatkiZaBazo(5202,9,5,14,"35:55","5.6.2011",5));
-		lista.add(new podatkiZaBazo(6020,16,2,25,"43:45","7.6.2011",4));
-		lista.add(new podatkiZaBazo(370,13,2,18,"00:55","7.6.2011",34));
-		lista.add(new podatkiZaBazo(650,7,2,10,"02:45","9.6.2011",9));
+		lista.add(new podatkiZaBazo(5202,9,5,14,"35:55","5.6.2011",150));
+		lista.add(new podatkiZaBazo(6020,16,2,25,"43:45","7.6.2011",196));
+		lista.add(new podatkiZaBazo(370,13,2,18,"00:55","7.6.2011",10));
+		lista.add(new podatkiZaBazo(650,7,2,10,"02:45","9.6.2011",12));
 
 
 		addDB(lista.get(0));
@@ -161,6 +162,7 @@ public class ApplicationExample extends Application {
 			tmp.maxSpeed=c.getDouble(DBAdapterBaza.POS__MAX_SPEED);
 			tmp.cas=c.getString(DBAdapterBaza.POS__CAS);
 			tmp.datum= c.getString(DBAdapterBaza.POS__DATUM);
+			tmp.kalorije=c.getInt(DBAdapterBaza.POS__KALORIJE);
 			
 			
 			lista.add(tmp); 

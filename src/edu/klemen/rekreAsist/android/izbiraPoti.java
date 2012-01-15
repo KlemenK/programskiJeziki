@@ -176,20 +176,20 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 				myMapView.getOverlays().clear();
 				izbranaPotLokacije.clear();
 				podatki.resetIzbranaPot();
-				premik.setText("Premikaj");
+//				premik.setText("Premikaj");
 				ROUTE_FLAG=0;
 				ROUTE_FLAG1=0;
 				
 			}else if(ROUTE_FLAG==0){
 				ROUTE_FLAG=-1;
 				premik.setTextSize(10);
-				premik.setText("Premik stop");
+//				premik.setText("Premik stop");
 				premik.setBackgroundResource(R.drawable.premikrdecaikona);
 			}
 			else{
 				ROUTE_FLAG=0;
 				premik.setTextSize(14);
-				premik.setText("Premikaj");
+//				premik.setText("Premikaj");
 				premik.setBackgroundResource(R.drawable.premikicon);
 			}
 			break;
@@ -221,7 +221,7 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 	        	DrawPath(prvaLokacija, zadnaLokacija, Color.RED, myMapView);
 	        	ROUTE_FLAG=1;//pridobim samo eno pot
 	        	ROUTE_FLAG1=1;
-	        	premik.setText("Reset");
+//	        	premik.setText("Reset");
 	        }
 		}	
 		return false;
