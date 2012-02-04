@@ -94,7 +94,7 @@
                     android:layout_height="19dp"
                     android:layout_weight="0.14"
                     android:background="@drawable/widgetbtn"
-                    android:text="Osvezi/naseldnji" />
+                    android:text="Osvezi/naslednji" />
             </LinearLayout>
         </LinearLayout>
 

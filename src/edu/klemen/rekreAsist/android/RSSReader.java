@@ -19,7 +19,7 @@ public class RSSReader {
 	private static final String SOAP_ACTION="http://sportniKoledar.klemen.edu/preberiPodatke";
 	private static final String METHOD_NAME="preberiPodatke";
 	private static final String NAMESPACE="http://sportniKoledar.klemen.edu";
-	private static final String URL="http://192.168.1.101:8080/SportniKoledar/services/PreberiPodatke?wsdl";
+	private static final String URL="http://192.168.1.6:8080/SportniKoledar/services/PreberiPodatke?wsdl";
 	private String rezultat="";
 //	public static RSSReader getInstance() {
 //		if (instance == null) {

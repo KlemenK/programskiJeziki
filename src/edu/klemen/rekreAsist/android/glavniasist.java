@@ -38,444 +38,469 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class glavniasist extends MapActivity implements android.view.View.OnClickListener {
-	Button startstop,pavza,novKrog;
-	TextView cas,pot,krog,hitrost,maxHitrost;
+public class glavniasist extends MapActivity implements
+		android.view.View.OnClickListener {
+	Button startstop, pavza, novKrog;
+	TextView cas, pot, krog, hitrost, maxHitrost;
 	TextView tvTemperatura;
 	Chronometer stoparca;
-	
-	ApplicationExample podatki;//baza
-	
-	ArrayList<Vadba> poljeRekreacij=new ArrayList<Vadba>();
-	
+
+	ApplicationExample podatki;// baza
+
+	ArrayList<Vadba> poljeRekreacij = new ArrayList<Vadba>();
+
 	MapController mapController;
 	MyPositionOverlay positionOverlay;
 	ArrayList<Location> locations;
 	List<Float> speed;
-	public float dolzina=0;
-	public int trenKrog=0;
-	public boolean pause=false;
-	public boolean flag=true;
-	public long start = 0;//SystemClock.elapsedRealtime();
+	public double dolzina = 0;
+	public int trenKrog = 0;
+	public boolean pause = false;
+	public boolean flag = true;
+	public long start = 0;// SystemClock.elapsedRealtime();
 	public long end = 0;
-	float povSp=0;
-	double kalorije=0.0;
-	boolean stoparcaFlag=false;
-	boolean tflag=true;
-	public float maxSpeed=0;
+	float povSp = 0;
+	double kalorije = 0.0;
+	boolean stoparcaFlag = false;
+	boolean tflag = true;
+	public float maxSpeed = 0;
 	LocationManager locationManager;
 	public Calendar koledar;
-	private boolean FLAG_PRVIC=true, FLAG_START_STOP=true;
-	public int oznacbaPoti=0;
-	
-	
+	private boolean FLAG_PRVIC = true, FLAG_START_STOP = true;
+	public int oznacbaPoti = 0;
+
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.glavni);
-		
-		
+
 		this.setRequestedOrientation(1);
-		podatki=(ApplicationExample)getApplication(); //baza
-		
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_1);
+		podatki = (ApplicationExample) getApplication(); // baza
+
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+				R.layout.custom_title_1);
 		tvTemperatura = (TextView) findViewById(R.id.tv_TitleTemperatura);
 		tvTemperatura.setTextColor(Color.WHITE);
-		
-		
-		locations=new ArrayList<Location>();
-		speed=new ArrayList<Float>();
-		
-		
-		
-		startstop=(Button) findViewById(R.id.btnStartStop);
-		pavza=(Button) findViewById(R.id.btnPavza);
-		cas=(TextView) findViewById(R.id.cas);
-		pot=(TextView) findViewById(R.id.pot);
-		krog=(TextView) findViewById(R.id.krog);
-		hitrost=(TextView) findViewById(R.id.tw_Hitrost);
-		novKrog=(Button) findViewById(R.id.btnNovKrog);
-		maxHitrost=(TextView) findViewById(R.id.maxHitrost);
-		
+
+		locations = new ArrayList<Location>();
+		speed = new ArrayList<Float>();
+
+		startstop = (Button) findViewById(R.id.btnStartStop);
+		pavza = (Button) findViewById(R.id.btnPavza);
+		cas = (TextView) findViewById(R.id.cas);
+		pot = (TextView) findViewById(R.id.pot);
+		krog = (TextView) findViewById(R.id.krog);
+		hitrost = (TextView) findViewById(R.id.tw_Hitrost);
+		novKrog = (Button) findViewById(R.id.btnNovKrog);
+		maxHitrost = (TextView) findViewById(R.id.maxHitrost);
+
 		startstop.setOnClickListener(this);
 		pavza.setOnClickListener(this);
 		novKrog.setOnClickListener(this);
-		
-		stoparca=(Chronometer) findViewById(R.id.stoparca);
-		
-		krog.setText("Krog: "+trenKrog);
-		
-		
-		stoparca.setFormat(null);
-		
 
-		Asinhrono task= new Asinhrono();//temperatura
-		
+		stoparca = (Chronometer) findViewById(R.id.stoparca);
+
+		krog.setText("Krog: " + trenKrog);
+
+		stoparca.setFormat(null);
+
+		Asinhrono task = new Asinhrono();// temperatura
+
 		task.execute();
 
-		
-		
-		try{
-		//-----------------------------------------maps--
-		MapView myMapView1 = (MapView)findViewById(R.id.myMapView);
-		mapController = myMapView1.getController();
-		
-	//	myMapView1.setSatellite(true);
-	//	myMapView1.setStreetView(true);
-		myMapView1.displayZoomControls(false);
+		try {
+			// -----------------------------------------maps--
+			MapView myMapView1 = (MapView) findViewById(R.id.myMapView);
+			mapController = myMapView1.getController();
 
-		mapController.setZoom(17);
+			// myMapView1.setSatellite(true);
+			// myMapView1.setStreetView(true);
+			myMapView1.displayZoomControls(false);
 
+			mapController.setZoom(17);
 
-		
-		String context = Context.LOCATION_SERVICE;
-		locationManager = (LocationManager)getSystemService(context);
-		// Add the MyPositionOverlay
-		positionOverlay = new MyPositionOverlay();
-		if(podatki.FLAG_IZBRANA_POT==true) positionOverlay.setIzbranaPot(podatki.getIzbranaPot());//dodam izbrano pot
-		List<Overlay> overlays = myMapView1.getOverlays();
-		overlays.add(positionOverlay);
+			String context = Context.LOCATION_SERVICE;
+			locationManager = (LocationManager) getSystemService(context);
+			// Add the MyPositionOverlay
+			positionOverlay = new MyPositionOverlay();
+			if (podatki.FLAG_IZBRANA_POT == true)
+				positionOverlay.setIzbranaPot(podatki.getIzbranaPot());// dodam
+																		// izbrano
+																		// pot
+			List<Overlay> overlays = myMapView1.getOverlays();
+			overlays.add(positionOverlay);
 
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		criteria.setAltitudeRequired(false);
-		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(true);
-		criteria.setPowerRequirement(Criteria.POWER_LOW);
-		String provider = locationManager.getBestProvider(criteria, true);
+			Criteria criteria = new Criteria();
+			criteria.setAccuracy(Criteria.ACCURACY_FINE);
+			criteria.setAltitudeRequired(false);
+			criteria.setBearingRequired(false);
+			criteria.setCostAllowed(true);
+			criteria.setPowerRequirement(Criteria.POWER_LOW);
+			String provider = locationManager.getBestProvider(criteria, true);
 
-//		Location location = locationManager.getLastKnownLocation(provider);
-//		my_updateWithNewLocation(location);
-		
-		locationManager.requestLocationUpdates(provider, 35, 10, locationListener);
-		
-		//-----------------------------------------maps/-
-		}catch(Exception f){
-			Toast.makeText(this, "Prosim preverite ali imate vklopljen internet in GPS", Toast.LENGTH_LONG).show();
+			// Location location =
+			// locationManager.getLastKnownLocation(provider);
+			// my_updateWithNewLocation(location);
+
+			locationManager.requestLocationUpdates(provider, 0, 0,
+					locationListener);
+
+			// -----------------------------------------maps/-
+		} catch (Exception f) {
+			Toast.makeText(this,
+					"Prosim preverite ali imate vklopljen internet in GPS",
+					Toast.LENGTH_LONG).show();
 		}
-		
+
 	}
-	
+
 	private final LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
-			if(FLAG_PRVIC==true){//nastavim prvo točko
+			if (FLAG_PRVIC == true) {// nastavim prvo točko
 				locations.clear();
 				podatki.listaPoti.clear();
-				Double geoLat = location.getLatitude()*1E6;
-				Double geoLng = location.getLongitude()*1E6;
-				GeoPoint point = new GeoPoint(geoLat.intValue(),geoLng.intValue());
+
+				Double geoLat = location.getLatitude() * 1E6;
+				Double geoLng = location.getLongitude() * 1E6;
+				GeoPoint point = new GeoPoint(geoLat.intValue(), geoLng
+						.intValue());
 				mapController.animateTo(point);
 				locations.add(location);
-				podatki.listaPoti.add(new PodatkiZaPoti(location.getLatitude(), location.getLongitude()));
-				FLAG_START_STOP=false;
+				podatki.listaPoti.add(new PodatkiZaPoti(location.getLatitude(),
+						location.getLongitude()));
+				FLAG_START_STOP = false;
 			}
 			my_updateWithNewLocation(location);
-			FLAG_PRVIC=false;
+			FLAG_PRVIC = false;
 		}
 
-		public void onProviderDisabled(String provider){
+		public void onProviderDisabled(String provider) {
 			my_updateWithNewLocation(null);
 		}
 
-		public void onProviderEnabled(String provider){ }
-		public void onStatusChanged(String provider, int status, 
-				Bundle extras){ }
+		public void onProviderEnabled(String provider) {
+		}
+
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
 	};
 
 	private void my_updateWithNewLocation(Location location) {
-		//String latLongString;
-		dolzina=0;
-		//TextView myLocationText;
-		//myLocationText = (TextView)findViewById(R.id.myLocationText);
-		
+		// String latLongString;
+		dolzina = 0;
+		// TextView myLocationText;
+		// myLocationText = (TextView)findViewById(R.id.myLocationText);
+
 		if (location != null) {
-			Double geoLat = location.getLatitude()*1E6;
-			Double geoLng = location.getLongitude()*1E6;
-			
-			podatki.addDBPot(new PodatkiZaPoti(geoLat, geoLng));//dodam tocko za pot
-			
-			GeoPoint point = new GeoPoint(geoLat.intValue(), 
-					geoLng.intValue());
+			Double geoLat = location.getLatitude() * 1E6;
+			Double geoLng = location.getLongitude() * 1E6;
+
+			podatki.addDBPot(new PodatkiZaPoti(geoLat, geoLng));// dodam tocko
+																// za pot
+
+			GeoPoint point = new GeoPoint(geoLat.intValue(), geoLng.intValue());
 
 			mapController.animateTo(point);
-			
-			if(FLAG_PRVIC==true) positionOverlay.setLocation(location,oznacbaPoti);
-			
-			if(FLAG_START_STOP==true){//zagnano ali ne
-				
-				//latLongString = "Lat:" + lat + "\nLong:" + lng;
-			
-				if(FLAG_PRVIC==false){
+
+			if (FLAG_PRVIC == true)
+				positionOverlay.setLocation(location, oznacbaPoti);
+
+			if (FLAG_START_STOP == true) {// zagnano ali ne
+
+				// latLongString = "Lat:" + lat + "\nLong:" + lng;
+
+				if (FLAG_PRVIC == false) {
 					double lat = location.getLatitude();
 					double lng = location.getLongitude();
 					podatki.listaPoti.add(new PodatkiZaPoti(lat, lng));
-					locations.add(location); //prvič preskočimo
+					locations.add(location); // prvič preskočimo
 				}
-				positionOverlay.setLocation(location,oznacbaPoti);
-				Log.d("Prva tocka", "lat:"+locations.get(0).getLatitude()+" lng:"+locations.get(0).getLongitude());
-				double sp=location.getSpeed()*3.6;//pretvorba iz m/s v km/h
-				DecimalFormat te=new DecimalFormat("#.##");
-				sp=Double.valueOf(te.format(sp));
-				hitrost.setText("Hitrost: "+sp+"km/h "+oznacbaPoti);
-				if((sp>=0)&&(sp<10)) oznacbaPoti=0;
-				if((sp>=10)&&(sp<25)) oznacbaPoti=1;
-				if((sp>=25)) oznacbaPoti=2;
-				//-------------------------------------------------------------------||||||||||||||||||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-				speed.add((float)sp);
-				if(maxHitrost((float)sp)==true){
-					maxSpeed=(float)sp;
-					maxHitrost.setText("Max hitrost: "+maxSpeed+"km/h");
+				positionOverlay.setLocation(location, oznacbaPoti);
+				Log.d("Prva tocka", "lat:" + locations.get(0).getLatitude()
+						+ " lng:" + locations.get(0).getLongitude());
+				double sp = location.getSpeed() * 3.6;// pretvorba iz m/s v km/h
+				DecimalFormat te = new DecimalFormat("#.##");
+				sp = Double.valueOf(te.format(sp));
+				hitrost.setText("Hitrost: " + sp + "km/h " + oznacbaPoti);
+				if ((sp >= 0) && (sp < 10))
+					oznacbaPoti = 0;
+				if ((sp >= 10) && (sp < 25))
+					oznacbaPoti = 1;
+				if ((sp >= 25))
+					oznacbaPoti = 2;
+				// -------------------------------------------------------------------||||||||||||||||||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+				speed.add((float) sp);
+				if (maxHitrost((float) sp) == true) {
+					maxSpeed = (float) sp;
+					maxHitrost.setText("Max hitrost: " + maxSpeed + "km/h");
 				}
-				if((locations.size()>=2)){
-		    		
-		    		for(int i=0;i<locations.size()-1;i++){
-		    			Location loc1=locations.get(i);
-		    			Location loc2=locations.get(i+1);
-		    			dolzina+=loc1.distanceTo(loc2);   
-		    		//	DecimalFormat test=new DecimalFormat("#.##");
-		    		//	dolzina=float.valueOf(test.format(dolzina));
-		    			//loc1.gett
-		    		}
-		    		pot.setText("Pot: "+dolzina+"m");	
+				if ((locations.size() >= 2)) {
+
+					for (int i = 0; i < locations.size() - 1; i++) {
+						Location loc1 = locations.get(i);
+						Location loc2 = locations.get(i + 1);
+						dolzina += loc1.distanceTo(loc2);
+						// DecimalFormat test=new DecimalFormat("#.##");
+						// dolzina=float.valueOf(test.format(dolzina));
+						// loc1.gett
+					}
+					dolzina=Double.valueOf(te.format(dolzina));
+					pot.setText("Pot: " + dolzina + "m");
 				}
 			}
-			//myLocationText.setText("Trenutni polo�aj je:" + latLongString);
+			// myLocationText.setText("Trenutni polo�aj je:" + latLongString);
 		}
 	}
-	public boolean maxHitrost(float s){
-		for(int i=0;i<speed.size();i++){
-			if(s<speed.get(i)) return false;
+
+	public boolean maxHitrost(float s) {
+		for (int i = 0; i < speed.size(); i++) {
+			if (s < speed.get(i))
+				return false;
 		}
 		return true;
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+
 		switch (v.getId()) {
 		case R.id.btnStartStop:
-		//	Toast test;
-			if(pause==false){
-				if(flag==false){
-					
+			// Toast test;
+			if (pause == false) {
+				if (flag == false) {
+
 					positionOverlay.resetLokacije();
-					//start=SystemClock.elapsedRealtime();
-					stoparca.setBase(SystemClock.elapsedRealtime()-end);
+					// start=SystemClock.elapsedRealtime();
+					stoparca.setBase(SystemClock.elapsedRealtime() - end);
 					stoparca.start();
-					stoparcaFlag=true;
-					FLAG_START_STOP=true;
-					FLAG_PRVIC=true;//pridobimo startno tocko
-					pause=true;
-					tflag=false;
-				}else{
+					stoparcaFlag = true;
+					FLAG_START_STOP = true;
+					FLAG_PRVIC = true;// pridobimo startno tocko
+					pause = true;
+					tflag = false;
+				} else {
 					locations.clear();
-					start=SystemClock.elapsedRealtime();
-					stoparca.setBase(SystemClock.elapsedRealtime());//prvi�
+					start = SystemClock.elapsedRealtime();
+					stoparca.setBase(SystemClock.elapsedRealtime());// prvi�
 					stoparca.start();
-					FLAG_START_STOP=true;
-					stoparcaFlag=true;
-					pause=true;
-					flag=false;
-					tflag=false;
+					FLAG_START_STOP = true;
+					stoparcaFlag = true;
+					pause = true;
+					flag = false;
+					tflag = false;
 				}
 				startstop.setBackgroundResource(R.drawable.buttonstop);
-			}
-			else{// zamejaj koledar
+			} else {// zamejaj koledar
 				startstop.setBackgroundResource(R.drawable.buttonplay);
-				if(tflag==false){
-					FLAG_START_STOP=false;//preneham gledat lokacijo
+				if (tflag == false) {
+					FLAG_START_STOP = false;// preneham gledat lokacijo
 					Calendar kol;
-					kol=Calendar.getInstance();
+					kol = Calendar.getInstance();
 
-					
-					int dan=kol.get(Calendar.DATE);
-					int mesec= kol.get(Calendar.MONTH)+1;
-					int leto= kol.get(Calendar.YEAR);
-//					test=Toast.makeText(this, dan+"  "+mesec+"  "+leto, Toast.LENGTH_SHORT);
-//					test.show();
-					povSp=povprecnaHitrost(speed);
-					kalorije=priblkalorije(povSp, stoparca.getText().toString());//izračun kalorij
-					
-					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp, trenKrog, maxSpeed, stoparca.getText().toString(),dan+":"+mesec+":"+leto,kalorije));
-					
-			//		poljeRekreacij.add(new Vadba(locations, speed, trenKrog, maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
+					int dan = kol.get(Calendar.DATE);
+					int mesec = kol.get(Calendar.MONTH) + 1;
+					int leto = kol.get(Calendar.YEAR);
+					// test=Toast.makeText(this, dan+"  "+mesec+"  "+leto,
+					// Toast.LENGTH_SHORT);
+					// test.show();
+					povSp = povprecnaHitrost(speed);
+					kalorije = priblkalorije(povSp, stoparca.getText()
+							.toString());// izračun kalorij
+
+					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp,
+							trenKrog, maxSpeed, stoparca.getText().toString(),
+							dan + ":" + mesec + ":" + leto, kalorije));
+
+					// poljeRekreacij.add(new Vadba(locations, speed, trenKrog,
+					// maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
 					locations.clear();
 					speed.clear();
-					trenKrog=0;
-					maxSpeed=0;
+					trenKrog = 0;
+					maxSpeed = 0;
 					stoparca.stop();
 					stoparca.setBase(SystemClock.elapsedRealtime());
-					flag=true;
-					pause=false;
-					
-					hitrost.setText("Hitrost: "+0.0+"km/h");
+					flag = true;
+					pause = false;
+
+					hitrost.setText("Hitrost: " + 0.0 + "km/h");
 					cas.setText("Cas: ");
-					maxHitrost.setText("Max Hitrost: "+maxSpeed+"km/h");
-					krog.setText("Krog: "+trenKrog);
-					pot.setText("Pot: "+0+"m");
-					
-//					test=Toast.makeText(this, "stvrstic:"+po, Toast.LENGTH_SHORT);
-//					test.show();
+					maxHitrost.setText("Max Hitrost: " + maxSpeed + "km/h");
+					krog.setText("Krog: " + trenKrog);
+					pot.setText("Pot: " + 0 + "m");
+
+					// test=Toast.makeText(this, "stvrstic:"+po,
+					// Toast.LENGTH_SHORT);
+					// test.show();
 				}
 			}
 			break;
 
 		case R.id.btnPavza:
 			stoparca.stop();
-			if(tflag==false){
-				end=SystemClock.elapsedRealtime() - stoparca.getBase();
-				tflag=true;
+			if (tflag == false) {
+				end = SystemClock.elapsedRealtime() - stoparca.getBase();
+				tflag = true;
 			}
-			pause=false;
+			pause = false;
 			break;
 		case R.id.btnNovKrog:
 			trenKrog++;
-			krog.setText("Krog: "+trenKrog);
+			krog.setText("Krog: " + trenKrog);
 			stoparca.setBase(SystemClock.elapsedRealtime());
 			break;
 
 		default:
 			break;
 		}
-		
+
 	}
-	private int rang(float h){
-		if((h>4)&&(h<6)) return 90;
-		if((h>6)&&(h<10)) return 230;
-		if((h>10)&&(h<15)) return 410;
-		if(h>15) return 520;
+
+	private int rang(float h) {
+		if ((h > 4) && (h < 6))
+			return 90;
+		if ((h > 6) && (h < 10))
+			return 230;
+		if ((h > 10) && (h < 15))
+			return 410;
+		if (h > 15)
+			return 520;
 		return 0;
 	}
-	private float priblkalorije(float povhitr, String cas){
-		int min=0,h=0;
+
+	private float priblkalorije(float povhitr, String cas) {
+		int min = 0, h = 0;
 		String[] ca;
-//		Toast.makeText(this, "kalorije "+cas, Toast.LENGTH_SHORT).show();
-		ca=cas.split(":");
-		if(ca.length==3){
-			h= Integer.parseInt(ca[0]);
+		// Toast.makeText(this, "kalorije "+cas, Toast.LENGTH_SHORT).show();
+		ca = cas.split(":");
+		if (ca.length == 3) {
+			h = Integer.parseInt(ca[0]);
 			min = Integer.parseInt(ca[1]);
 		}
-		if(ca.length==2){
+		if (ca.length == 2) {
 			min = Integer.parseInt(ca[0]);
 		}
-		
-		float cal=0;
-		
-		if(h!=0){
-			cal=cal+rang(povhitr);
+
+		float cal = 0;
+
+		if (h != 0) {
+			cal = cal + rang(povhitr);
 		}
-		cal=cal+((min*rang(povhitr))/60);
-//		Toast.makeText(this, "kalorije "+cal, Toast.LENGTH_SHORT).show();
+		cal = cal + ((min * rang(povhitr)) / 60);
+		// Toast.makeText(this, "kalorije "+cal, Toast.LENGTH_SHORT).show();
 
 		return cal;
 	}
-	private float povprecnaHitrost(List<Float> s){
-		float v=0;
-		for(int i=0;i<s.size();i++) v=v+s.get(i);
-		return (v/s.size());
+
+	private float povprecnaHitrost(List<Float> s) {
+		float v = 0;
+		for (int i = 0; i < s.size(); i++)
+			v = v + s.get(i);
+		return (v / s.size());
 	}
+
 	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public String executeHttpGet() throws Exception 
-	{
+	public String executeHttpGet() throws Exception {
 		String page;
-	    BufferedReader in = null;
-	    try {
-	        HttpClient client = new DefaultHttpClient();
-	        HttpGet request = new HttpGet();
-	        request.setURI(new URI("http://meteo.arso.gov.si/uploads/probase/www/observ/surface/text/sl/observationAms_MARIBOR_TABOR_latest.xml"));
-	        HttpResponse response = client.execute(request);
-	        in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-	        StringBuffer sb = new StringBuffer("");
-	        String line = "";
-	        String NL = System.getProperty("line.separator");
-	        
-	        
-	        while ((line = in.readLine()) != null) sb.append(line + NL);	        
-	        
-	        in.close();
-	        page = sb.toString();
-	      //  System.out.println(page);
-	        
-	        
-	        } 
-	    finally 
-		    {
-			        if (in != null) 
-			        {
-			            try {
-			                	in.close();
-			                } 
-			            	catch (IOException e) 
-			            	{
-			            		e.printStackTrace();
-			                }
-			        }
-		     }
-	    
-	    return page;
-	}
-	public String setTemperatura(){
-		String stran = new String();
-		
-		int znacka=0;
-		String tempC;
-		//String relVlaznost,povpTemp,link;
-		try
-		{
-			stran= executeHttpGet();
+		BufferedReader in = null;
+		try {
+			HttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet();
+			request
+					.setURI(new URI(
+							"http://meteo.arso.gov.si/uploads/probase/www/observ/surface/text/sl/observationAms_MARIBOR_TABOR_latest.xml"));
+			HttpResponse response = client.execute(request);
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			StringBuffer sb = new StringBuffer("");
+			String line = "";
+			String NL = System.getProperty("line.separator");
+
+			while ((line = in.readLine()) != null)
+				sb.append(line + NL);
+
+			in.close();
+			page = sb.toString();
+			// System.out.println(page);
+
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		catch (Exception e) {}
-		znacka = stran.indexOf("<t>");
-		tempC = stran.substring(znacka+3, stran.indexOf("</t>"));
-		return tempC;
-	/*	relVlaznost=stran.substring(stran.indexOf("<rh>")+4,stran.indexOf("</rh>"));
-		povpTemp=stran.substring(stran.indexOf("<tavg>")+6,stran.indexOf("<tavg>"));
-		link=stran.substring(stran.indexOf("<docs_url>")+10,stran.indexOf("<docs_url>"));
-	*/		
-		//Toast.makeText(glavniasist.this, "V temp ", Toast.LENGTH_LONG).show();
-		
+
+		return page;
 	}
-	
-	
-	private class Asinhrono extends AsyncTask<Void,Void,String> {
 
+	public String setTemperatura() {
+		String stran = new String();
 
+		int znacka = 0;
+		String tempC;
+		// String relVlaznost,povpTemp,link;
+		try {
+			stran = executeHttpGet();
+		} catch (Exception e) {
+		}
+		znacka = stran.indexOf("<t>");
+		tempC = stran.substring(znacka + 3, stran.indexOf("</t>"));
+		return tempC;
+		/*
+		 * relVlaznost=stran.substring(stran.indexOf("<rh>")+4,stran.indexOf("</rh>"
+		 * ));
+		 * povpTemp=stran.substring(stran.indexOf("<tavg>")+6,stran.indexOf("<tavg>"
+		 * ));
+		 * link=stran.substring(stran.indexOf("<docs_url>")+10,stran.indexOf(
+		 * "<docs_url>"));
+		 */
+		// Toast.makeText(glavniasist.this, "V temp ",
+		// Toast.LENGTH_LONG).show();
+
+	}
+
+	private class Asinhrono extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected String doInBackground(Void... params) {
-			String tempPrebran="";
-			try{
-				
-				tempPrebran=setTemperatura();
-			}catch(Exception f){
-				//tvTemperatura.setText("Error");
+			String tempPrebran = "";
+			try {
+
+				tempPrebran = setTemperatura();
+			} catch (Exception f) {
+				// tvTemperatura.setText("Error");
 				return "ni internetne povezave";
 			}
-			return tempPrebran+"°C";
+			return tempPrebran + "°C";
 		}
-		protected void onPostExecute(String tretji){
-			//tekst.setText("dsa");
+
+		protected void onPostExecute(String tretji) {
+			// tekst.setText("dsa");
 			tvTemperatura.setText(tretji);
-		//	Toast.makeText(asinhroniTask.this, "Vsota: "+tretji, Toast.LENGTH_LONG).show();
-			
+			// Toast.makeText(asinhroniTask.this, "Vsota: "+tretji,
+			// Toast.LENGTH_LONG).show();
+
 		}
 	}
+
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
-	
-		if(!podatki.izbranaPotLokacije.isEmpty()){
+
+		if (!podatki.izbranaPotLokacije.isEmpty()) {
 			podatki.izbranaPotLokacije.clear();
-			podatki.FLAG_IZBRANA_POT=false;
+			podatki.FLAG_IZBRANA_POT = false;
 		}
 		super.onStop();
 	}
 
 }
-
