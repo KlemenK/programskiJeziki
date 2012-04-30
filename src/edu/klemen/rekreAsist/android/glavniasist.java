@@ -16,7 +16,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -38,8 +37,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class glavniasist extends MapActivity implements
-		android.view.View.OnClickListener {
+public class glavniasist extends MapActivity implements android.view.View.OnClickListener {
 	Button startstop, pavza, novKrog;
 	TextView cas, pot, krog, hitrost, maxHitrost;
 	TextView tvTemperatura;
@@ -306,12 +304,17 @@ public class glavniasist extends MapActivity implements
 					// Toast.LENGTH_SHORT);
 					// test.show();
 					povSp = povprecnaHitrost(speed);
-					kalorije = priblkalorije(povSp, stoparca.getText()
-							.toString());// izračun kalorij
-
-					podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp,
+					if((povSp>=0)||(Float.isNaN(povSp)==true)) povSp=0;
+					kalorije = priblkalorije(povSp, stoparca.getText().toString());// izračun kalorij
+					
+					if(podatki.lista.isEmpty()==true)
+						podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp,
 							trenKrog, maxSpeed, stoparca.getText().toString(),
-							dan + ":" + mesec + ":" + leto, kalorije));
+							dan + ":" + mesec + ":" + leto, kalorije,1));
+					else podatki.dodajPodatke(new podatkiZaBazo(dolzina, povSp,
+							trenKrog, maxSpeed, stoparca.getText().toString(),
+							dan + ":" + mesec + ":" + leto, kalorije,podatki.lista.get(podatki.lista.size()-1).idPovezava+1 ));
+					
 
 					// poljeRekreacij.add(new Vadba(locations, speed, trenKrog,
 					// maxSpeed,kol.getTime().getDate()+"."+kol.getTime().getMonth()+"."+kol.getTime().getYear()));
@@ -412,8 +415,7 @@ public class glavniasist extends MapActivity implements
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
-			request
-					.setURI(new URI(
+			request.setURI(new URI(
 							"http://meteo.arso.gov.si/uploads/probase/www/observ/surface/text/sl/observationAms_MARIBOR_TABOR_latest.xml"));
 			HttpResponse response = client.execute(request);
 			in = new BufferedReader(new InputStreamReader(response.getEntity()

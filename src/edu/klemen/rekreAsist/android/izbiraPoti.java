@@ -143,15 +143,15 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 				GeoPoint point = new GeoPoint(geoLat.intValue(),geoLng.intValue());
 				mapController1.animateTo(point);
 			}
-//			locations1.add(location);
-//			if(lokacijaFlag==false){
-//				Double lat= location.getLatitude()*1E6;
-//				Double lng= location.getLongitude()*1E6;
-//				prvaLokacija= new GeoPoint(lat.intValue(),lng.intValue());
-//				lokacijaFlag=true;
-//			}
-//	    	GeoPoint srcGeoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),(int) (location.getLongitude() * 1E6)); 
-//	    	myMapView.getController().animateTo(srcGeoPoint);
+			locations1.add(location);
+			if(lokacijaFlag==false){
+				Double lat= location.getLatitude()*1E6;
+				Double lng= location.getLongitude()*1E6;
+				prvaLokacija= new GeoPoint(lat.intValue(),lng.intValue());
+				lokacijaFlag=true;
+			}
+	    	GeoPoint srcGeoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),(int) (location.getLongitude() * 1E6)); 
+	    	myMapView.getController().animateTo(srcGeoPoint);
 		}
 
 	}

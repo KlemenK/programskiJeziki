@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.Application;
 import android.database.Cursor;
 import android.util.Log;
+
+import com.google.android.maps.GeoPoint;
+
+
 import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
-import edu.klemen.rekreasist.database.poti.DBAdapterBazaPoti;
+
 
 public class ApplicationExample extends Application {
 	//Step 4.1
@@ -21,7 +23,7 @@ public class ApplicationExample extends Application {
 	 */
 	//private List<PodatkiSportniKoledar> news;
 	private int stevec;
-	private long trenutnID;
+	public long izbranaPrikazPot=0;
 	
 	private List<PodatkiSportniKoledar> podatkiKoledarWidget;
 	
@@ -47,7 +49,7 @@ public class ApplicationExample extends Application {
 	DBAdapterBaza db;
 	public ArrayList<podatkiZaBazo> lista;
 	
-	DBAdapterBazaPoti dbPoti;
+//	DBAdapterBazaPoti dbPoti;
 	public ArrayList<PodatkiZaPoti> listaPoti;
 //konec baze
 /*
@@ -77,7 +79,7 @@ public class ApplicationExample extends Application {
 	public void onCreate() {
         super.onCreate(); //ne pozabi
         db = new DBAdapterBaza(this);
-        dbPoti= new DBAdapterBazaPoti(this);
+//        dbPoti= new DBAdapterBazaPoti(this);
         
       
         lista= new ArrayList<podatkiZaBazo>();
@@ -87,6 +89,7 @@ public class ApplicationExample extends Application {
 //        initPoti(); //testni podatki
         
         fillFromDB();
+//        if(lista.size()!=0) ID_ZA_POTI=lista.get(lista.size()-1).idPovezava;
         podatkiList = new PodatkiArrayAdapter(this, R.layout.seznam_podatkov,lista);//podatkiList-seznam, R-layout ki bo izpiso, s keriga seznama
 
 	}
@@ -96,10 +99,10 @@ public class ApplicationExample extends Application {
 	public void init()
 	{
 		//testni podatki
-		lista.add(new podatkiZaBazo(5202,9,5,14,"35:55","5.6.2011",150));
-		lista.add(new podatkiZaBazo(6020,16,2,25,"43:45","7.6.2011",196));
-		lista.add(new podatkiZaBazo(370,13,2,18,"00:55","7.6.2011",10));
-		lista.add(new podatkiZaBazo(650,7,2,10,"02:45","9.6.2011",12));
+		lista.add(new podatkiZaBazo(5202,9,5,14,"35:55","5.6.2011",150,1));
+		lista.add(new podatkiZaBazo(6020,16,2,25,"43:45","7.6.2011",196,2));
+		lista.add(new podatkiZaBazo(370,13,2,18,"00:55","7.6.2011",10,3));
+		lista.add(new podatkiZaBazo(650,7,2,10,"02:45","9.6.2011",12,4));
 
 
 		addDB(lista.get(0));
@@ -114,11 +117,11 @@ public class ApplicationExample extends Application {
 		Random ran= new Random(System.currentTimeMillis());
 		PodatkiZaPoti tmp = new PodatkiZaPoti();
 		for(int i=0;i<200;i++){
-			Log.e("test", "v zanki "+i);
-			if(i<50) tmp.id=1;
-			else if(i<100) tmp.id=2;
-			else if(i<150) tmp.id=3;
-			else if(i<200) tmp.id=4; //extDouble() * (5.12 - (-5.12)) + (-5.12);
+//			Log.e("test", "v zanki "+i);
+			if(i<50) tmp.idP=1;
+			else if(i<100) tmp.idP=2;
+			else if(i<150) tmp.idP=3;
+			else if(i<200) tmp.idP=4; //extDouble() * (5.12 - (-5.12)) + (-5.12);
 			tmp.Xkord=ran.nextDouble()* (90 -(-90)) + (-90);
 			tmp.Ykord=ran.nextDouble()* (90 -(-90)) + (-90);
 			
@@ -132,21 +135,21 @@ public class ApplicationExample extends Application {
 		lista.add(tmp);//orginal
 		addDB(tmp);//orginal
 		
-		
+		long ID_ZA_POTI=lista.get(lista.size()-1).idPovezava;//dobim zadni števec
 		
 		for(int i=0;i<listaPoti.size();i++){
-			listaPoti.get(i).setID(trenutnID);
+			listaPoti.get(i).setID(ID_ZA_POTI);
 			addDBPot(listaPoti.get(i));
 		}
 	}
 	
 	
 	
-	public void dodajPodatkePot(PodatkiZaPoti tmp)//za poti
-	{
-		listaPoti.add(tmp);
-		addDBPot(tmp);
-	}
+//	public void dodajPodatkePot(PodatkiZaPoti tmp)//za poti
+//	{
+//		listaPoti.add(tmp);
+//		addDBPot(tmp);
+//	}
 
 	//DB dodano
 	public void fillFromDB() {
@@ -163,7 +166,7 @@ public class ApplicationExample extends Application {
 			tmp.cas=c.getString(DBAdapterBaza.POS__CAS);
 			tmp.datum= c.getString(DBAdapterBaza.POS__DATUM);
 			tmp.kalorije=c.getInt(DBAdapterBaza.POS__KALORIJE);
-			
+			tmp.idPovezava=c.getLong(DBAdapterBaza.POS_ID_POVEZAVA);
 			
 			lista.add(tmp); 
 			
@@ -174,33 +177,79 @@ public class ApplicationExample extends Application {
 	}
 	public void addDB(podatkiZaBazo s) {
 		db.open();
-		s.setID(db.insertPodatki(s));
-		trenutnID=s.id;
+	//	s.setID(db.insertPodatki(s));
+		db.insertPodatki(s);
+	//	trenutnID=s.id;
 		db.close();	
 	}
 	public void addDBPot(PodatkiZaPoti s) {
-		dbPoti.open();
-			dbPoti.insertPodatki(s);
-		dbPoti.close();	
+		db.open();
+		db.insertPodatki(s);
+		db.close();	
 	}
 	
 	public void getPotIzDB(int index) {//vrnem točke določene poti
-		dbPoti.open();
+		db.open();
 		PodatkiZaPoti tmp;
-		Cursor c= dbPoti.getRoute(index);
+		Cursor c= db.getRoute(index);
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 			tmp = new PodatkiZaPoti();
 			
 			
-			tmp.Xkord= c.getDouble(DBAdapterBazaPoti.POS__XKORD);
-			tmp.Ykord= c.getDouble(DBAdapterBazaPoti.POS__YKORD);
+			tmp.Xkord= c.getDouble(DBAdapterBaza.POS__XKORD);
+			tmp.Ykord= c.getDouble(DBAdapterBaza.POS__YKORD);
 			
 			listaPoti.add(tmp); 
 
 		}
 		c.close(); 
-		dbPoti.close();
+		db.close();
+	}
+	public ArrayList<GeoPoint> getIzbranoPotIzDB(int index) {//vrnem točke določene poti
+		ArrayList<GeoPoint> temp= new ArrayList<GeoPoint>();
+		db.open();
+		GeoPoint tmp;
+		Cursor c= db.getRoute(index);
+		Double a,b;
+
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+//			tmp= new 
+			a=c.getDouble(DBAdapterBaza.POS__XKORD);
+			b=c.getDouble(DBAdapterBaza.POS__YKORD);
+			
+			tmp = new GeoPoint(a.intValue(),b.intValue());
+
+//			tmp.= c.getDouble(DBAdapterBaza.POS__XKORD);
+//			tmp.Ykord= c.getDouble(DBAdapterBaza.POS__YKORD);
+			temp.add(tmp); 
+
+		}
+		c.close(); 
+		db.close();
+		return temp;
+	}
+	public void brisiRekreacijo(long index){//brišem rekreacijo
+		db.open();		
+		Cursor c= db.getStevec(index);
+		
+		//c.getCount();
+//		Log.d("t1", "pred vrednostjo "+ index+"    "+c.getLong(DBAdapterBaza.POS_ID_POVEZAVA));
+		for(int i=0;i<lista.size();i++) System.out.println("Pred indeksi pod:"+lista.get(i).id+"   pot:"+lista.get(i).idPovezava);
+		try{
+			long idPo= c.getLong(DBAdapterBaza.POS_ID_POVEZAVA);
+			db.deletePodatekPoti(idPo);
+			db.deletePodatek(index);
+		}catch(Exception e){};
+		db.close();
+		lista.clear();
+		fillFromDB();
+		for(int i=0;i<lista.size();i++) System.out.println("Po indeksi pod:"+lista.get(i).id+"   pot:"+lista.get(i).idPovezava);
+		System.out.println("po brisanju"+lista.size());
+//		Log.d("t1", "vrednost "+idPo);
+//		dbPoti.open();
+//		dbPoti.deletePodatek(idPo);
+//		dbPoti.close();
 	}
 
 

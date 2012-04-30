@@ -25,8 +25,6 @@ public class OpenWidgetService extends Service{
 //			Log.wtf("test1", "t2");
 			int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
 			if (appWidgetIds.length > 0) {
-//				Log.d("test","t6");
-			//	Log.d("test54", "sad");
 //				Log.d("test","t2");
 				for (int widgetId : appWidgetIds) {
 //					Log.d("test","t3");
