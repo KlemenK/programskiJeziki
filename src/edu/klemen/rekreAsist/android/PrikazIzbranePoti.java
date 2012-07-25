@@ -167,23 +167,25 @@ public class PrikazIzbranePoti extends MapActivity{
 		GeoPoint gp1,gp2;
 			if(pot.size()>0) 
 			{ 
-				gp1 = new GeoPoint(pot.get(0).getLatitudeE6(),pot.get(0).getLongitudeE6());
-				mapController1.animateTo(gp1);
+				gp1 = new GeoPoint((int) (pot.get(0).getLatitudeE6()*1E6),(int) (pot.get(0).getLongitudeE6()*1E6));
+			//	mapController1.animateTo(gp1);
 				for(int i=1;i<pot.size();i++) // the last one would be crash 
 				{ 
 					// watch out! For GeoPoint, first:latitude, second:longitude 
 					
-					gp2 = new GeoPoint(pot.get(i).getLatitudeE6(),
-										pot.get(i).getLongitudeE6());
+					gp2 = new GeoPoint((int)(pot.get(i).getLatitudeE6()*1E6),
+										(int)(pot.get(i).getLongitudeE6()*1E6));
 
 					mMapView01.getOverlays().add(new MyOverlay(gp1,gp2,2,color)); 
 					gp1=gp2;
 					//Log.d("xxx","pair:" + pairs[i]); 
 				}
+				
 				gp2 = new GeoPoint(pot.get(pot.size()-1).getLatitudeE6(),
 									pot.get(pot.size()-1).getLongitudeE6());
-				
+				mMapView01.getOverlays().add(new MyOverlay(gp1,gp2,2,color));
 				mMapView01.getOverlays().add(new MyOverlay(gp2,gp2, 3)); // use the default color 
+				mapController1.animateTo(gp2);
 			}  
 		Log.d("asd", "test1 "+myMapView.getOverlays().size());
 	}

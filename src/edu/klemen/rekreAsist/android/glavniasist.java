@@ -482,7 +482,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 				// tvTemperatura.setText("Error");
 				return "ni internetne povezave";
 			}
-			return tempPrebran + "Â°C";
+			return tempPrebran + "°C";
 		}
 
 		protected void onPostExecute(String tretji) {

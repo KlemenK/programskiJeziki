@@ -5,11 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 public class WidgetProvider extends AppWidgetProvider{
 	public String ACTION_BUTTON="button";//stisnemo na gumb

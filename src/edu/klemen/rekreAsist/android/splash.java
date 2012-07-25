@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 
 public class splash extends Activity{
 
-	protected int _splashTime = 5000; 
+	protected int _splashTime = 5000; //5s
 		 
 		    private Thread splashTread;
 		 
@@ -17,7 +17,8 @@ public class splash extends Activity{
 		        super.onCreate(savedInstanceState);
 		        setContentView(R.layout.splash);
 		 
-		        final splash sPlashScreen = this; 
+		        final splash sPlashScreen = this;
+		        this.setRequestedOrientation(1);
 		 
 		        // thread for displaying the SplashScreen
 		        splashTread = new Thread() {

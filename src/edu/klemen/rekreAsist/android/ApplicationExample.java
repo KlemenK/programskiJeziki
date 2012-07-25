@@ -6,10 +6,8 @@ import java.util.Random;
 
 import android.app.Application;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
-
 
 import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
 
