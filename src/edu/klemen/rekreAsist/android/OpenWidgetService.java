@@ -9,11 +9,11 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 public class OpenWidgetService extends Service{
-	ApplicationExample app;
+	ApplicationControl app;
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
-		if(app==null) app = (ApplicationExample) getApplicationContext();
+		if(app==null) app = (ApplicationControl) getApplicationContext();
 	//	Log.d("test5", "shgf");
 		RSSReader rss = new RSSReader();
 		if(app.getPodatkiKoledarWidget()==null || app.getPodatkiKoledarWidget().size()==0)

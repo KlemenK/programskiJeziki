@@ -13,7 +13,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class SeznamPodatkov extends ListActivity implements OnItemClickListener , OnItemLongClickListener {
 	
-	ApplicationExample app;
+	ApplicationControl app;
 	Intent prikazIzbire;
 	/** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class SeznamPodatkov extends ListActivity implements OnItemClickListener 
         setContentView(R.layout.stevec_list_activity);
         
         this.setRequestedOrientation(1);
-        app=(ApplicationExample) getApplication();
+        app=(ApplicationControl) getApplication();
         setListAdapter(app.podatkiList);
 		this.getListView().setOnItemClickListener(this);
 		this.getListView().setOnItemLongClickListener(this);

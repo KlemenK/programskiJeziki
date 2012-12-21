@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 public class rekreasist extends Activity implements OnClickListener {
     private static final int GLAVNO_OKNO_ID = 0;
 	private static final int IZBIRA_POTI_ID = 0;
-	ApplicationExample podatki;
+	ApplicationControl podatki;
 	/** Called when the activity is first created. */
 	ImageButton izhod,znova,pot,seznam;
     @Override
@@ -21,7 +21,7 @@ public class rekreasist extends Activity implements OnClickListener {
         this.setRequestedOrientation(1);
         
         
-        podatki=(ApplicationExample)getApplication();
+        podatki=(ApplicationControl)getApplication();
         
         izhod=(ImageButton) findViewById(R.id.btnIzhod);
         znova=(ImageButton) findViewById(R.id.btnZnova);

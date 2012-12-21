@@ -12,7 +12,7 @@ import com.google.android.maps.GeoPoint;
 import edu.klemen.rekreAsist.android.database.DBAdapterBaza;
 
 
-public class ApplicationExample extends Application {
+public class ApplicationControl extends Application {
 	//Step 4.1
 	//Step 4.2 popravi AndroidManifest.xml
 	
@@ -83,10 +83,10 @@ public class ApplicationExample extends Application {
         lista= new ArrayList<podatkiZaBazo>();
         listaPoti= new ArrayList<PodatkiZaPoti>();
  
-//        init();
-//        initPoti(); //testni podatki
+        init();
+        initPoti(); //testni podatki
         
-        fillFromDB();
+//        fillFromDB();
 //        if(lista.size()!=0) ID_ZA_POTI=lista.get(lista.size()-1).idPovezava;
         podatkiList = new PodatkiArrayAdapter(this, R.layout.seznam_podatkov,lista);//podatkiList-seznam, R-layout ki bo izpiso, s keriga seznama
 
@@ -239,11 +239,13 @@ public class ApplicationExample extends Application {
 			db.deletePodatekPoti(idPo);
 			db.deletePodatek(index);
 		}catch(Exception e){};
+		c.close();
 		db.close();
 		lista.clear();
 		fillFromDB();
 		for(int i=0;i<lista.size();i++) System.out.println("Po indeksi pod:"+lista.get(i).id+"   pot:"+lista.get(i).idPovezava);
 		System.out.println("po brisanju"+lista.size());
+		
 //		Log.d("t1", "vrednost "+idPo);
 //		dbPoti.open();
 //		dbPoti.deletePodatek(idPo);

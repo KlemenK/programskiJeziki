@@ -30,7 +30,7 @@ public class PrikazIzbranePoti extends MapActivity{
 	ZoomControls zoom;
 	
 	ArrayList<GeoPoint> izbranaPotLokacije;
-	ApplicationExample podatki;
+	ApplicationControl podatki;
 	int zoomkoeficient=15;//zoom
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -57,7 +57,7 @@ public class PrikazIzbranePoti extends MapActivity{
 		
 //		locations1=new ArrayList<Location>();
 		izbranaPotLokacije= new ArrayList<GeoPoint>();
-		podatki=(ApplicationExample)getApplication();
+		podatki=(ApplicationControl)getApplication();
 
 		try{
 		//-----------------------------------------maps--

@@ -11,11 +11,11 @@ import android.widget.Toast;
 
 public class UpdateWidgetService extends Service{
 	
-	ApplicationExample app;
+	ApplicationControl app;
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
-		if(app==null) app = (ApplicationExample) getApplicationContext();
+		if(app==null) app = (ApplicationControl) getApplicationContext();
 		
 		RSSReader rss = new RSSReader();
 		

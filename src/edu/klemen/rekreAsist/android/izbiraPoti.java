@@ -51,7 +51,7 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 	Boolean lokacijaFlag=false;
 	GeoPoint prvaLokacija;
 	ArrayList<GeoPoint> izbranaPotLokacije;
-	ApplicationExample podatki;
+	ApplicationControl podatki;
 	private boolean FLAG_PRVIC=true;
 	
 	
@@ -72,7 +72,7 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 		
 		locations1=new ArrayList<Location>();
 		izbranaPotLokacije= new ArrayList<GeoPoint>();
-		podatki=(ApplicationExample)getApplication();
+		podatki=(ApplicationControl)getApplication();
 
 		try{
 		//-----------------------------------------maps--

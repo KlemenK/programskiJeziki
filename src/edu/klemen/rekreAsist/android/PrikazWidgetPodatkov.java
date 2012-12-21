@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class PrikazWidgetPodatkov extends Activity implements OnClickListener {
-	ApplicationExample app;
+	ApplicationControl app;
 	TextView tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tv9,tv10;
 
 	int link;
@@ -22,7 +22,7 @@ public class PrikazWidgetPodatkov extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prikazpodatkovwidget);
-		app=(ApplicationExample)getApplication();
+		app=(ApplicationControl)getApplication();
 		
 		tv1=(TextView) findViewById(R.id.tvDatumW);
 		tv3=(TextView) findViewById(R.id.tvEmailW);

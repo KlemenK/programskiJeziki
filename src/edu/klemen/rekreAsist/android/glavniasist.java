@@ -43,7 +43,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 	TextView tvTemperatura;
 	Chronometer stoparca;
 
-	ApplicationExample podatki;// baza
+	ApplicationControl podatki;// baza
 
 	ArrayList<Vadba> poljeRekreacij = new ArrayList<Vadba>();
 
@@ -74,7 +74,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		setContentView(R.layout.glavni);
 
 		this.setRequestedOrientation(1);
-		podatki = (ApplicationExample) getApplication(); // baza
+		podatki = (ApplicationControl) getApplication(); // baza
 
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title_1);
@@ -117,15 +117,13 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			myMapView1.displayZoomControls(false);
 
 			mapController.setZoom(17);
-
 			String context = Context.LOCATION_SERVICE;
 			locationManager = (LocationManager) getSystemService(context);
 			// Add the MyPositionOverlay
 			positionOverlay = new MyPositionOverlay();
-			if (podatki.FLAG_IZBRANA_POT == true)
-				positionOverlay.setIzbranaPot(podatki.getIzbranaPot());// dodam
-																		// izbrano
-																		// pot
+			if (podatki.FLAG_IZBRANA_POT == true) positionOverlay.setIzbranaPot(podatki.getIzbranaPot());// dodam
+																										// izbrano
+																										// pot
 			List<Overlay> overlays = myMapView1.getOverlays();
 			overlays.add(positionOverlay);
 
