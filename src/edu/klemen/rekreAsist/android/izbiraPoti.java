@@ -265,9 +265,9 @@ public class izbiraPoti extends MapActivity implements OnClickListener, OnTouchL
 			if(doc.getElementsByTagName("GeometryCollection").getLength()>0) 
 			{ 
 				//String path = doc.getElementsByTagName("GeometryCollection").item(0).getFirstChild().getFirstChild().getNodeName(); 
-				String path = doc.getElementsByTagName("GeometryCollection").item(0).getFirstChild().getFirstChild().getFirstChild().getNodeValue() ; 
-				Log.d("xxx","path="+ path); 
-				String [] pairs = path.split(" "); 
+				String pot = doc.getElementsByTagName("GeometryCollection").item(0).getFirstChild().getFirstChild().getFirstChild().getNodeValue() ; 
+				Log.d("xxx","path="+ pot); 
+				String [] pairs = pot.split(" "); 
 				String[] lngLat = pairs[0].split(","); // lngLat[0]=longitude lngLat[1]=latitude lngLat[2]=height 
 				// src 
 				GeoPoint startGP = new GeoPoint((int)(Double.parseDouble(lngLat[1])*1E6),(int)(Double.parseDouble(lngLat[0])*1E6));

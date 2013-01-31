@@ -29,7 +29,7 @@ public class PodatkiArrayAdapter extends ArrayAdapter<podatkiZaBazo>{
 		// by ListView is null.
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.seznam_podatkov, null); //Step Step 4.7.5 DOLOČI ROW LL
-			// Creates a ViewHolder and store references to the skupnaCena children views
+			// Creates a ViewHolder and store references to the skupni podatki children views
 			// we want to bind data to.
 			holder = new ViewHolder();
 			holder.datum = (TextView) convertView.findViewById(R.id.tv_ListDatum); //Step 4.8 POPRAVI

@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class SeznamPodatkov extends ListActivity implements OnItemClickListener , OnItemLongClickListener {
+public class SeznamPodatkov extends ListActivity implements OnItemLongClickListener {
 	
 	ApplicationControl app;
 	Intent prikazIzbire;
@@ -23,16 +23,11 @@ public class SeznamPodatkov extends ListActivity implements OnItemClickListener 
         this.setRequestedOrientation(1);
         app=(ApplicationControl) getApplication();
         setListAdapter(app.podatkiList);
-		this.getListView().setOnItemClickListener(this);
 		this.getListView().setOnItemLongClickListener(this);
 		prikazIzbire=new Intent(this,PrikazIzbranePoti.class);
 
 	}
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-//		Log.e("test",""+arg2);
-	}
+	
 	private long a=0;
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {

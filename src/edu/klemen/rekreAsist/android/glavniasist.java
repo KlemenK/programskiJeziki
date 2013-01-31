@@ -76,8 +76,8 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		this.setRequestedOrientation(1);
 		podatki = (ApplicationControl) getApplication(); // baza
 
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-				R.layout.custom_title_1);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.custom_title_1);
+		
 		tvTemperatura = (TextView) findViewById(R.id.tv_TitleTemperatura);
 		tvTemperatura.setTextColor(Color.WHITE);
 
@@ -112,7 +112,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			MapView myMapView1 = (MapView) findViewById(R.id.myMapView);
 			mapController = myMapView1.getController();
 
-			// myMapView1.setSatellite(true);
+			// myMapView1.setSatellite(true); //zaradi posodobitve mapsov ni potrebno vec
 			// myMapView1.setStreetView(true);
 			myMapView1.displayZoomControls(false);
 
@@ -139,8 +139,9 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			// locationManager.getLastKnownLocation(provider);
 			// my_updateWithNewLocation(location);
 
-			locationManager.requestLocationUpdates(provider, 0, 0,
+			locationManager.requestLocationUpdates(provider, 0, 0,//pridobivanje to�k klko hitro se da
 					locationListener);
+			
 
 			// -----------------------------------------maps/-
 		} catch (Exception f) {
@@ -159,12 +160,16 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 
 				Double geoLat = location.getLatitude() * 1E6;
 				Double geoLng = location.getLongitude() * 1E6;
-				GeoPoint point = new GeoPoint(geoLat.intValue(), geoLng
-						.intValue());
+//				Log.d("geolat in geolng", geoLat+"   "+geoLng);
+				GeoPoint point = new GeoPoint(geoLat.intValue(), geoLng.intValue());
 				mapController.animateTo(point);
 				locations.add(location);
-				podatki.listaPoti.add(new PodatkiZaPoti(location.getLatitude(),
-						location.getLongitude()));
+				
+				
+//				podatki.listaPoti.add(new PodatkiZaPoti(location.getLatitude(),
+//						location.getLongitude()));
+				podatki.listaPoti.add(new PodatkiZaPoti(point));
+//				podatki.listaPoti.
 				FLAG_START_STOP = false;
 			}
 			my_updateWithNewLocation(location);
@@ -181,7 +186,7 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 		}
 	};
-
+public PodatkiZaPoti vmesni;
 	private void my_updateWithNewLocation(Location location) {
 		// String latLongString;
 		dolzina = 0;
@@ -192,11 +197,15 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 			Double geoLat = location.getLatitude() * 1E6;
 			Double geoLng = location.getLongitude() * 1E6;
 
-			podatki.addDBPot(new PodatkiZaPoti(geoLat, geoLng));// dodam tocko
-																// za pot
+//			podatki.addDBPot(new PodatkiZaPoti(geoLat, geoLng));// dodam tocko      prva
+//																// za pot
+//			podatki.addDBPot(new PodatkiZaPoti(location.getLatitude(), location.getLongitude()));// dodam tocko     druga
+			// za pot
 
 			GeoPoint point = new GeoPoint(geoLat.intValue(), geoLng.intValue());
-
+			
+			podatki.addDBPot(new PodatkiZaPoti(point));
+			
 			mapController.animateTo(point);
 
 			if (FLAG_PRVIC == true)
@@ -207,14 +216,15 @@ public class glavniasist extends MapActivity implements android.view.View.OnClic
 				// latLongString = "Lat:" + lat + "\nLong:" + lng;
 
 				if (FLAG_PRVIC == false) {
-					double lat = location.getLatitude();
-					double lng = location.getLongitude();
+					int lat = (int) (location.getLatitude()*1E6);//*1E6 test normalno brez
+					int lng = (int) (location.getLongitude()*1E6);//
+					Log.d("lat lng dodajanje", lat+" "+lng+"   "+location.getLatitude()+" "+location.getLongitude());
 					podatki.listaPoti.add(new PodatkiZaPoti(lat, lng));
 					locations.add(location); // prvič preskočimo
 				}
 				positionOverlay.setLocation(location, oznacbaPoti);
-				Log.d("Prva tocka", "lat:" + locations.get(0).getLatitude()
-						+ " lng:" + locations.get(0).getLongitude());
+//				Log.d("Prva tocka", "lat:" + locations.get(0).getLatitude()
+//						+ " lng:" + locations.get(0).getLongitude());
 				double sp = location.getSpeed() * 3.6;// pretvorba iz m/s v km/h
 				DecimalFormat te = new DecimalFormat("#.##");
 				sp = Double.valueOf(te.format(sp));

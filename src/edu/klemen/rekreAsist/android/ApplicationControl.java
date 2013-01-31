@@ -84,8 +84,8 @@ public class ApplicationControl extends Application {
         listaPoti= new ArrayList<PodatkiZaPoti>();
  
         init();
-        initPoti(); //testni podatki
-        
+////        initPoti(); //testni podatki
+//        
 //        fillFromDB();
 //        if(lista.size()!=0) ID_ZA_POTI=lista.get(lista.size()-1).idPovezava;
         podatkiList = new PodatkiArrayAdapter(this, R.layout.seznam_podatkov,lista);//podatkiList-seznam, R-layout ki bo izpiso, s keriga seznama
@@ -120,8 +120,8 @@ public class ApplicationControl extends Application {
 			else if(i<100) tmp.idP=2;
 			else if(i<150) tmp.idP=3;
 			else if(i<200) tmp.idP=4; //extDouble() * (5.12 - (-5.12)) + (-5.12);
-			tmp.Xkord=ran.nextDouble()* (90 -(-90)) + (-90);
-			tmp.Ykord=ran.nextDouble()* (90 -(-90)) + (-90);
+//			tmp.Xkord=ran.nextDouble()* (90 -(-90)) + (-90);
+//			tmp.Ykord=ran.nextDouble()* (90 -(-90)) + (-90);
 			
 			addDBPot(tmp);
 		}
@@ -156,7 +156,6 @@ public class ApplicationControl extends Application {
 		podatkiZaBazo tmp;
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 			tmp = new podatkiZaBazo();
-			
 			tmp.pot= c.getDouble(DBAdapterBaza.POS__POT);
 			tmp.povPrecnaHitrost= c.getDouble(DBAdapterBaza.POS__POVPRECNA_HITROST);
 			tmp.stKrogov=c.getInt(DBAdapterBaza.POS__ST_KROGOV);
@@ -164,11 +163,8 @@ public class ApplicationControl extends Application {
 			tmp.cas=c.getString(DBAdapterBaza.POS__CAS);
 			tmp.datum= c.getString(DBAdapterBaza.POS__DATUM);
 			tmp.kalorije=c.getInt(DBAdapterBaza.POS__KALORIJE);
-			tmp.idPovezava=c.getLong(DBAdapterBaza.POS_ID_POVEZAVA);
-			
+			tmp.idPovezava=c.getLong(DBAdapterBaza.POS_ID_POVEZAVA);		
 			lista.add(tmp); 
-			
-			
 		}
 		c.close();
 		db.close();
@@ -195,8 +191,10 @@ public class ApplicationControl extends Application {
 			tmp = new PodatkiZaPoti();
 			
 			
-			tmp.Xkord= c.getDouble(DBAdapterBaza.POS__XKORD);
-			tmp.Ykord= c.getDouble(DBAdapterBaza.POS__YKORD);
+			tmp.setTocka(c.getInt(DBAdapterBaza.POS__XKORD), c.getInt(DBAdapterBaza.POS__YKORD));
+
+			//			= c.getDouble(DBAdapterBaza.POS__XKORD); // prvo
+//			tmp.Ykord= c.getDouble(DBAdapterBaza.POS__YKORD);
 			
 			listaPoti.add(tmp); 
 
@@ -209,14 +207,14 @@ public class ApplicationControl extends Application {
 		db.open();
 		GeoPoint tmp;
 		Cursor c= db.getRoute(index);
-		Double a,b;
+		int a,b;
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 //			tmp= new 
-			a=c.getDouble(DBAdapterBaza.POS__XKORD);
-			b=c.getDouble(DBAdapterBaza.POS__YKORD);
+			a=c.getInt(DBAdapterBaza.POS__XKORD);
+			b=c.getInt(DBAdapterBaza.POS__YKORD);
 			
-			tmp = new GeoPoint(a.intValue(),b.intValue());
+			tmp = new GeoPoint(a,b);
 
 //			tmp.= c.getDouble(DBAdapterBaza.POS__XKORD);
 //			tmp.Ykord= c.getDouble(DBAdapterBaza.POS__YKORD);

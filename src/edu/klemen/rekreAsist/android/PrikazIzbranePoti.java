@@ -3,13 +3,11 @@ package edu.klemen.rekreAsist.android;
 import java.util.ArrayList;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ZoomControls;
 
 import com.google.android.maps.GeoPoint;
@@ -43,7 +41,7 @@ public class PrikazIzbranePoti extends MapActivity{
 		zoom=(ZoomControls)	findViewById(R.id.zoomControls1);
 		
 		
-		nazajIzbira.setOnClickListener(new OnClickListener() {
+		nazajIzbira.setOnClickListener(new OnClickListener() {// krajši naèin onclick listenerja - za kratke kode
 			
 			@Override
 			public void onClick(View v) {
@@ -100,34 +98,38 @@ public class PrikazIzbranePoti extends MapActivity{
 		
 		//branje iz baze in izris
 		izbranaPotLokacije=podatki.getIzbranoPotIzDB((int)podatki.izbranaPrikazPot);//pot iz baze za prikaz
+		
+		for(int i=0;i<izbranaPotLokacije.size();i++){
+			Log.d("lat lng iz baze direkt",izbranaPotLokacije.get(i).getLatitudeE6()+"  "+izbranaPotLokacije.get(i).getLongitudeE6());
+		}
 		DrawPath(izbranaPotLokacije, 190, myMapView);
 		
 		
 		
 	}
 
-	private void my_updateWithNewLocation(GeoPoint location) {
-
-		if (location != null) {
-			
-
-				int geoLat = location.getLatitudeE6();
-				int geoLng = location.getLongitudeE6();
-				GeoPoint point = new GeoPoint(geoLat,geoLng);
-				mapController1.animateTo(point);
-			
-//			locations1.add(location);
-//			if(lokacijaFlag==false){
-//				Double lat= location.getLatitude()*1E6;
-//				Double lng= location.getLongitude()*1E6;
-//				prvaLokacija= new GeoPoint(lat.intValue(),lng.intValue());
-//				lokacijaFlag=true;
-//			}
-//	    	GeoPoint srcGeoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),(int) (location.getLongitude() * 1E6)); 
-//	    	myMapView.getController().animateTo(srcGeoPoint);
-		}
-
-	}
+//	private void my_updateWithNewLocation(GeoPoint location) {
+//
+//		if (location != null) {
+//			
+//
+//				int geoLat = location.getLatitudeE6();
+//				int geoLng = location.getLongitudeE6();
+//				GeoPoint point = new GeoPoint(geoLat,geoLng);
+//				mapController1.animateTo(point);
+//			
+////			locations1.add(location);
+////			if(lokacijaFlag==false){
+////				Double lat= location.getLatitude()*1E6;
+////				Double lng= location.getLongitude()*1E6;
+////				prvaLokacija= new GeoPoint(lat.intValue(),lng.intValue());
+////				lokacijaFlag=true;
+////			}
+////	    	GeoPoint srcGeoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),(int) (location.getLongitude() * 1E6)); 
+////	    	myMapView.getController().animateTo(srcGeoPoint);
+//		}
+//
+//	}
 	
 
 	@Override
@@ -167,15 +169,15 @@ public class PrikazIzbranePoti extends MapActivity{
 		GeoPoint gp1,gp2;
 			if(pot.size()>0) 
 			{ 
-				gp1 = new GeoPoint((int) (pot.get(0).getLatitudeE6()*1E6),(int) (pot.get(0).getLongitudeE6()*1E6));
+				gp1 = new GeoPoint(pot.get(0).getLatitudeE6(),pot.get(0).getLongitudeE6());
 			//	mapController1.animateTo(gp1);
 				for(int i=1;i<pot.size();i++) // the last one would be crash 
 				{ 
 					// watch out! For GeoPoint, first:latitude, second:longitude 
 					
-					gp2 = new GeoPoint((int)(pot.get(i).getLatitudeE6()*1E6),
-										(int)(pot.get(i).getLongitudeE6()*1E6));
-
+					gp2 = new GeoPoint(pot.get(i).getLatitudeE6(), pot.get(i).getLongitudeE6());
+					
+					Log.d("geolat in geolng",pot.get(i).getLatitudeE6()+"   "+pot.get(i).getLongitudeE6());
 					mMapView01.getOverlays().add(new MyOverlay(gp1,gp2,2,color)); 
 					gp1=gp2;
 					//Log.d("xxx","pair:" + pairs[i]); 
@@ -184,7 +186,7 @@ public class PrikazIzbranePoti extends MapActivity{
 				gp2 = new GeoPoint(pot.get(pot.size()-1).getLatitudeE6(),
 									pot.get(pot.size()-1).getLongitudeE6());
 				mMapView01.getOverlays().add(new MyOverlay(gp1,gp2,2,color));
-				mMapView01.getOverlays().add(new MyOverlay(gp2,gp2, 3)); // use the default color 
+				mMapView01.getOverlays().add(new MyOverlay(gp2,gp2, 3)); // default barva 
 				mapController1.animateTo(gp2);
 			}  
 		Log.d("asd", "test1 "+myMapView.getOverlays().size());
